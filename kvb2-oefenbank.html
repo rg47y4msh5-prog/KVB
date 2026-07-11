@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KVB2 Oefenbank v2 — examensimulatie en leermodus</title>
+<style>
+ body{font-family:Helvetica,Arial,sans-serif;background:#f4f7fa;color:#1a1a2e;margin:0;padding:0}
+ header{background:#134a70;color:#fff;padding:14px 22px}
+ header h1{font-size:19px;margin:0 0 4px}header p{margin:0;font-size:12.5px;opacity:.9}
+ #timer{position:fixed;top:10px;right:16px;background:#fff;color:#134a70;font-weight:bold;font-size:16px;padding:6px 14px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.25);display:none;z-index:9}
+ #timer.laat{background:#c62828;color:#fff}
+ main{max-width:880px;margin:0 auto;padding:18px 16px 60px}
+ .menu{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+ button{font-size:14px;font-weight:bold;border:0;border-radius:8px;padding:11px 18px;cursor:pointer}
+ .prim{background:#1a5e8f;color:#fff}.sec{background:#e3edf5;color:#134a70}.groen{background:#1e6b30;color:#fff}
+ .kaart{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.12);padding:14px 16px;margin:14px 0}
+ .qkop{font-size:12px;color:#666;font-weight:bold;margin-bottom:6px}
+ .qtekst{font-size:14.5px;font-weight:bold;line-height:1.45;margin-bottom:10px}
+ .optie{display:block;background:#f2f6fa;border:2px solid #dde6ee;border-radius:8px;padding:9px 12px;margin:7px 0;font-size:13.5px;cursor:pointer;line-height:1.4}
+ .optie:hover{border-color:#1a5e8f}
+ .optie input{margin-right:9px}
+ .optie.goed{background:#e3f2e6;border-color:#1e6b30}
+ .optie.fout{background:#fde8e8;border-color:#c62828}
+ .invulrij{display:flex;gap:10px;align-items:center;font-size:14px}
+ .invulrij input{font-size:16px;font-weight:bold;padding:8px 10px;border:2px solid #1a5e8f;border-radius:8px;width:120px}
+ .marge{font-size:11.5px;color:#666}
+ .uitleg{background:#eef6ef;border-left:4px solid #1e6b30;border-radius:6px;padding:9px 12px;font-size:12.5px;margin-top:10px;line-height:1.5;display:none}
+ .uitleg b{color:#1e6b30}.art{color:#555;font-style:italic}
+ .qv{margin:8px 0}.qv svg{width:100%;max-width:430px;height:auto;background:#bfd9ec;border-radius:6px;display:block}
+ .qv svg.nacht{background:#16202e}
+ #score{background:#134a70;color:#fff;border-radius:10px;padding:18px;margin:16px 0;font-size:15px;line-height:1.7}
+ #score .groot{font-size:26px;font-weight:bold}
+ .blokscore{background:#fff;color:#134a70;border-radius:8px;padding:8px 12px;display:inline-block;margin:6px 8px 0 0;font-size:13px;font-weight:bold}
+ .voortgang{font-size:12px;color:#666;margin:4px 0 14px}
+</style>
+</head>
+<body>
+<header><h1>KVB2 Oefenbank v2</h1><p>Examensimulatie: 27 vragen (23 meerkeuze + 4 invulvragen) · 50 punten · geslaagd bij 35 · 90 minuten — of oefen per blok in de leermodus.</p></header>
+<div id="timer">90:00</div>
+<main>
+<div class="menu" id="hoofdmenu">
+ <button class="prim" onclick="startExamen()">▶ Start proefexamen</button>
+ <button class="sec" onclick="startLeer('E')">Leermodus blok E (SRW)</button>
+ <button class="sec" onclick="startLeer('F')">Leermodus blok F (navigatie)</button>
+ <button class="sec" onclick="startLeer('')">Leermodus alles</button>
+</div>
+<div id="app"></div>
+</main>
+<script>
+/* Toetsmatrijs: blok E = vraag 1-8 (13 pt, wettelijke bepalingen ruim water),
+   blok F = vraag 9-27 (37 pt, navigatie), vraag 24-27 = open invulvragen (3 pt elk).
+   Blokindeling en totalen conform CBR; per-vraagpunten pragmatisch verdeeld. */
+const SLOTS=[["E.1",1],["E.2",1],["E.3",2],["E.4",2],["E.5",2],["E.6",2],["E.7",2],["E.8",1],
+["F.9",1],["F.10",1],["F.11",1],["F.12",2],["F.13",2],["F.14",2],["F.15",2],["F.16",2],["F.17",1],
+["F.18",2],["F.19",2],["F.20",2],["F.21",2],["F.22",1],["F.23",2],["F.24",3],["F.25",3],["F.26",3],["F.27",3]];
+const BANK={};
+/* ===== BLOK E — SRW (eerste optie = juist; engine schudt) ===== */
+BANK["E.1"]=[
+{t:"Je vaart op de Westerschelde onder zeil en zet ook de motor bij. Wat ben je volgens het SRW?",
+ o:["Een motorschip — een zeilschip is alleen een schip onder zeil waarvan de motor níét wordt gebruikt","Een zeilschip, want de zeilen staan nog","Een motorsailer, een aparte categorie"],
+ u:"<b>Zeil + motor = motorschip.</b> De definitie van zeilschip eist dat de voortstuwingswerktuigen niet worden gebruikt. Overdag hoort daar de zwarte kegel (punt omlaag) bij.",a:"SRW art. 2 (definities)"},
+{t:"Je bent met je jacht vastgelopen op een plaat in de Westerschelde. Ben je volgens het SRW 'varend'?",
+ o:["Nee — varend betekent: niet ten anker, niet gemeerd én niet aan de grond","Ja, zolang de reis nog niet is beëindigd","Ja, tenzij je een ankerbol toont"],
+ u:"Een vastgevaren schip is <b>niet varend</b>. 'Varend' sluit ten anker liggen, gemeerd liggen én aan de grond zitten uit.",a:"SRW art. 2 (definities)"}];
+BANK["E.2"]=[
+{t:"Je kleine motorjacht (11 m) is uitgerust met een voor de binnenvaart goedgekeurde radar. Ben je op de Westerschelde marifoonplichtig?",
+ o:["Ja — een klein schip mét binnenvaartradar is wél marifoonplichtig","Nee, de marifoonplicht geldt alleen voor grote schepen","Alleen bij beperkt zicht"],
+ u:"De drietrap: groot (≥ 20 m) altijd plichtig · klein niet · <b>klein mét goedgekeurde binnenvaartradar wél</b>. En wie vrijwillig een marifoon heeft, moet hem gebruiken en uitluisteren waar voorgeschreven.",a:"SRW (marifoonbepalingen)"},
+{t:"Je ligt met je marifoon-uitgeruste jacht ten anker op de rede van Vlissingen. Wat geldt er voor de 'verplichting tot wachthouden'?",
+ o:["Die geldt óók nu: altijd uitluisteren en reageren op een oproep — ook gemeerd of ten anker, ook bij mooi weer","Die geldt alleen voor varende schepen","Die geldt alleen bij slecht zicht of 's nachts"],
+ u:"<b>Wachthouden geldt altijd</b>: varend, gemeerd, ten anker of aan de grond, onder alle omstandigheden. Je moet reageren op een oproep van de Rijkshavenmeester of een opsporingsambtenaar.",a:"SRW art. 50"}];
+BANK["E.3"]=[
+{t:"Twee kleine zeilschepen naderen elkaar op de Westerschelde met gevaar voor aanvaring. Het ene voert het zeil over bakboord, het andere over stuurboord. Wie gaat vóór?",
+ o:["Het schip met het zeil over bakboord (wind van stuurboord) — het schip over stuurboordboeg wijkt","Het schip met het zeil over stuurboord — bakboordboeg wijkt","Het loefwaartse schip gaat altijd vóór"],
+ u:"SRW-boegtaal: het schip dat <b>over stuurboordboeg ligt</b> (zeil over stuurboord, wind van bakboord) <b>wijkt</b>. Uitkomst identiek aan de KVB1-regel: wind van stuurboord gaat vóór. Zelfde boeg: loef wijkt voor lij.",a:"SRW art. 42 (kleine schepen onderling)"},
+{t:"Twee kleine motorschepen kruisen elkaar op de Westerschelde met gevaar voor aanvaring. Wat geldt?",
+ o:["Het schip dat de ander aan stuurboord van zich heeft wijkt uit — tijdig, naar stuurboord en niet vóórlangs","Het snelste schip wijkt","Beide schepen wijken naar bakboord"],
+ u:"<b>Rechts gaat vóór</b> (zoals in het BPR): wie de ander aan stuurboordzijde heeft, wijkt — tijdig, bij voorkeur naar stuurboord, en vermijdt vóór de ander over te lopen.",a:"SRW art. 42"}];
+BANK["E.4"]=[
+{t:"Je vaart met je jacht (9 m) een gestrekte koers langs de stuurboordzijde van het vaarwater. Een groot motorschip nadert met kruisende koers. Wie wijkt op de Westerschelde?",
+ o:["Jij — op de Westerschelde wijkt klein áltijd voor groot; de gestrekte-koersregel geldt alleen tussen kleine schepen onderling","Het grote schip — gestrekte koers stuurboordzijde gaat altijd vóór","Beide schepen moeten naar stuurboord uitwijken"],
+ u:"<b>Dé SRW-flip:</b> in het BPR beschermt de gestrekte koers je ook tegen groot; in het SRW niet. Klein wijkt voor groot, altijd.",a:"SRW art. 18"},
+{t:"Een groot zeilschip (klipper, 32 m) en een groot motorvrachtschip naderen elkaar op de Westerschelde met gevaar voor aanvaring. Wie wijkt?",
+ o:["Het grote zeilschip — op de Westerschelde wijkt groot zeil voor groot motor","Het motorschip — zeil gaat vóór motor","Wie de ander aan bakboord heeft"],
+ u:"<b>Flip t.o.v. het BPR:</b> tussen grote schepen wijkt op de Westerschelde het zeilschip voor het werktuiglijk voortbewogen schip.",a:"SRW art. 18"},
+{t:"Je hebt op de Westerschelde voorrang op een kruisend schip. Wat moet je doen?",
+ o:["Je koers behouden — je snelheid mág je wel aanpassen","Koers én vaart behouden, zoals overal","Niets: het wijkende schip regelt alles"],
+ u:"In het SRW betekent voorrang hebben: <b>alleen koers behouden</b>; de snelheid mag wijzigen (BPR en BVA eisen koers én vaart). Redt de wijker het alleen niet, dan moet ook jij meewerken om de aanvaring te voorkomen.",a:"SRW art. 17"}];
+BANK["E.5"]=[
+{t:"Het is nacht. Je zeilt op de Westerschelde met een open zeilboot van 8 meter en voert alleen een wit rondomschijnend licht in de masttop (zie beeld). Is dat voldoende?",
+ v:'<svg viewBox="0 0 430 200" class="nacht"><line x1="215" y1="150" x2="215" y2="50" stroke="#5a6a7c" stroke-width="3"/><circle cx="215" cy="44" r="8" fill="#fff"/><path d="M150,150 L280,150 Q296,150 296,160 Q296,170 280,170 L150,170 Z" fill="#2a3a4c" stroke="#5a6a7c" stroke-width="2"/><text x="215" y="192" text-anchor="middle" font-size="11" fill="#dfe8f2" font-weight="bold">zeilboot 8 m — alleen wit rondomlicht</text></svg>',
+ o:["Nee — één wit rondomlicht volstaat alleen voor boten korter dan 7 m (en niet sneller dan 13 km/u)","Ja, voor elk klein zeilschip is dit voldoende","Ja, want een open boot hoeft geen boordlichten te voeren"],
+ u:"De alleen-witlicht-regel stopt bij <b>7 m</b>. Een zeilboot van 8 m voert minimaal boordlichten + heklicht (of een driekleurenlicht in de top).",a:"SRW art. 41"},
+{t:"Je zeilt 's nachts met het driekleurenlicht in de masttop en start de motor. Wat doe je met de verlichting?",
+ o:["Driekleurenlicht uit; boordlichten, toplicht en heklicht aan (en overdag: zwarte kegel hijsen)","Niets — het driekleurenlicht blijft geldig","Driekleurenlicht aan laten en er een toplicht bij voeren"],
+ u:"Met de motor bij ben je een <b>motorschip</b>: motorverlichting voeren. Driekleurenlicht + toplicht combineren mag nooit. Het is óf-óf — en zeilend een haven binnenlopen mag niet, dus alléén een driekleurenlicht installeren is onhandig.",a:"SRW art. 25/41"}];
+BANK["E.6"]=[
+{t:"Je nadert 's nachts op de Westerschelde een baggerwerktuig dat aan de ene zijde twee rode lichten en aan de andere zijde twee groene lichten boven elkaar toont. Aan welke kant passeer je?",
+ v:'<svg viewBox="0 0 430 200" class="nacht"><rect x="150" y="90" width="130" height="32" rx="6" fill="#3a4656" stroke="#5a6a7c" stroke-width="2"/><line x1="130" y1="90" x2="130" y2="46" stroke="#5a6a7c" stroke-width="2"/><circle cx="130" cy="52" r="7" fill="#c62828"/><circle cx="130" cy="74" r="7" fill="#c62828"/><line x1="300" y1="90" x2="300" y2="46" stroke="#5a6a7c" stroke-width="2"/><circle cx="300" cy="52" r="7" fill="#2e7d32"/><circle cx="300" cy="74" r="7" fill="#2e7d32"/><text x="215" y="160" text-anchor="middle" font-size="11" fill="#dfe8f2" font-weight="bold">baggerwerktuig, nacht</text></svg>',
+ o:["Aan de zijde met de twee groene lichten — die kant van het vaarwater is vrij","Aan de zijde met de twee rode lichten","Aan beide zijden, mits langzaam"],
+ u:"Dubbel <b>groen</b> (dag: twee ruiten) = vaarwater aan die zijde vrij; dubbel rood (twee bollen) = niet vrij. Hoofdteken beperkt manoeuvreerbaar: rood-wit-rood / bol-ruit-bol.",a:"SRW (lichten en dagmerken)"},
+{t:"Je ziet 's nachts op de Westerschelde een schip met drie rode rondomschijnende lichten loodrecht boven elkaar. Wat is dit?",
+ o:["Een bovenmaats zeeschip (door zijn diepgang beperkt manoeuvreerbaar) — overdag: een zwarte cilinder","Een onmanoeuvreerbaar schip","Een vissersschip met uitstaand vistuig"],
+ u:"<b>3× rood = bovenmaats</b>: door de Rijkshavenmeester aangemerkt wegens lengte/diepgang. Onmanoeuvreerbaar = 2× rood (2 ballen); vissersschip = groen boven wit (diabolo).",a:"SRW art. 28"},
+{t:"Een gemeerd zeeschip toont 's nachts twee rondomschijnende lichten boven elkaar: rood boven, wit onder. Wat betekent dit voor jou?",
+ o:["Voorzichtig voorbijvaren: geen hinderlijke waterbeweging (golfslag/zuiging) veroorzaken","Passeren is verboden","Het schip heeft een politieopdracht"],
+ u:"<b>Rood boven wit</b> (dag: vlag/bord rood boven wit) beschermt stilliggende schepen tegen golfslag en zuiging: langzaam en ruim passeren.",a:"SRW (voorzichtig voorbijvaren)"}];
+BANK["E.7"]=[
+{t:"In een nauwe, stromende engte van de Westerschelde nadert een tegenligger. Jij vaart tégen de stroom in. Wat schrijft het SRW voor?",
+ o:["Jij houdt je gaande — je vaart de stroom 'dood' (snelheid door het water = stroomsnelheid) tot de tegenligger gepasseerd is","De tegenligger wacht, want jij hebt stuurboordwal","Wie het eerst bij de engte is, vaart door"],
+ u:"Bij een engte, bocht of aanlegplaats mét stroom houdt het <b>opvarende</b> (tegen de stroom in varende) schip zich gaande. Zonder stroom in een nauwe bocht: het schip met de <b>buitenbocht aan stuurboord</b> vervolgt zijn weg.",a:"SRW art. 6/9"},
+{t:"Vóór je vaart een motorschip dat één lange stoot gevolgd door twee korte stoten geeft. Wat gaat het doen?",
+ o:["Keren (opdraaien) over bakboord — en een opdraaiend schip heeft voorrang","Bakboord uit gaan (kleine koerswijziging)","Achteruitslaan"],
+ u:"SRW-keerseinen: 1 lang = attentie · lang + 1 kort = keren over stuurboord · <b>lang + 2 kort = keren over bakboord</b>. Opdraaien (van vóór naar tégen stroom) heeft voorrang; kop voor nemen niet. BPR-flip: daar is 1 of 2 kort zónder lange stoot een koerswijziging.",a:"SRW art. 10"}];
+BANK["E.8"]=[
+{t:"Je vaart van het Lauwersmeer over de Waddenzee en de Eemsmonding naar Delfzijl (zie kaartje). Met welke reglementen krijg je te maken?",
+ v:'<svg viewBox="0 0 430 210"><rect x="0" y="0" width="430" height="80" fill="#a9cde6"/><rect x="0" y="80" width="430" height="130" fill="#dfe8d2"/><path d="M60,110 Q60,84 96,84 L250,84 Q296,84 320,110 L354,150" fill="none" stroke="#e07b00" stroke-width="3.5" stroke-dasharray="9,6"/><circle cx="60" cy="112" r="6" fill="#134a70"/><text x="60" y="132" text-anchor="middle" font-size="10" font-weight="bold">Lauwersmeer</text><text x="180" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#134a70">Waddenzee</text><text x="330" y="70" text-anchor="middle" font-size="10" font-weight="bold" fill="#134a70">Eemsmonding</text><circle cx="356" cy="152" r="6" fill="#134a70"/><text x="356" y="172" text-anchor="middle" font-size="10" font-weight="bold">Delfzijl</text></svg>',
+ o:["BPR (Lauwersmeer + Waddenzee) én SRE én BVA — het SRE is een aanvulling op de BVA","Alleen het SRE","BPR en SRW"],
+ u:"BPR geldt óók op ruim binnenwater (Waddenzee, IJsselmeer, Markermeer, Oosterschelde). In de Eemsmonding geldt het <b>SRE als aanvulling op de BVA</b> — dus daar allebei.",a:"Toepassingsgebied reglementen"},
+{t:"Op de radartoren van Vlissingen brandt een geel schitterlicht. Wat betekent dit?",
+ o:["Er komen schepen van zee naar binnen via de Sardijngeul / het Oostgat","Het veer Vlissingen–Breskens steekt over","De haven van Vlissingen is gestremd"],
+ u:"Het gele schitterlicht waarschuwt voor <b>binnenkomend verkeer door de Sardijngeul (Oostgat)</b>. In het hele voorzorgsgebied geldt bovendien een ankerverbod; oostgaand verkeer blijft ten zuiden, westgaand ten noorden van de scheidingslijn.",a:"SRW art. 46/47"}];
+/* ===== BLOK F — navigatie, meerkeuze (F.9 t/m F.23) ===== */
+BANK["F.9"]=[
+{t:"De officiële zeekaarten voor kust- en binnenwater zijn mercatorprojecties. Wat is daarvan hét kenmerk?",
+ o:["Hoeken op de kaart zijn gelijk aan de hoeken in werkelijkheid en een koerslijn is een rechte lijn","Afstanden zijn overal op de kaart gelijk af te passen","Lengtecirkels lopen evenwijdig aan elkaar"],
+ u:"Mercator: <b>hoekgetrouw</b> en de koerslijn is recht — precies wat je voor het uitzetten van koersen nodig hebt.",a:"Les 5.1 (VBO)"},
+{t:"Wat is juist over meridianen (lengtecirkels)?",
+ o:["Ze lopen van pool tot pool en zijn állemaal even lang","Ze lopen evenwijdig aan de evenaar en worden richting de polen kleiner","Ze lopen tot maximaal 90° oost en west"],
+ u:"Meridianen: pool → pool, even lang, tot 180° O/W. <b>Parallellen</b> lopen evenwijdig aan de evenaar en krimpen richting de polen (tot 90° N/Z).",a:"Les 5.1 (VBO)"}];
+BANK["F.10"]=[
+{t:"Waar pas je op een zeekaart een afstand af?",
+ o:["Op de staande rand — 1 breedteminuut = 1 zeemijl (1852 m)","Op de liggende rand — daar staan de minuten het dichtst bij elkaar","Op beide randen, dat maakt niet uit"],
+ u:"Alleen de <b>staande rand</b>: breedteminuten zijn overal 1 zeemijl. Lengteminuten (liggende rand) krimpen richting de polen.",a:"Les 5.1 (VBO)"},
+{t:"Wat is de 'verheid'?",
+ o:["De afstand tussen twee punten, uitgedrukt in zeemijlen","De in één uur afgelegde afstand","De afstand waarop je een object kunt waarnemen"],
+ u:"Verheid = afstand in zeemijlen (afpassen met de passer). 1 zeemijl = 1852 m; 1 knoop = 1 zeemijl per uur.",a:"Les 5.1 (VBO)"}];
+BANK["F.11"]=[
+{t:"Wat betekent DST op je GPS-scherm?",
+ o:["De afstand tot het eerstvolgende waypoint","De afstand vanaf je vertrekpunt","De tijdsduur van de tocht"],
+ u:"DST = distance tot het volgende waypoint. Verder: COG = grondkoers, SOG = snelheid over de grond, XTE = afwijking van de koerslijn, ETA = vermoedelijke aankomsttijd.",a:"Les 5.1 (VBO)"},
+{t:"Hoe bepaalt het GPS-systeem jouw positie?",
+ o:["Door de afstanden te berekenen tussen de satellieten boven de horizon en de ontvanger","Door het tijdsverschil tussen jouw klok en de tijdzone","Door peilingen op de dichtstbijzijnde walstations"],
+ u:"Afstandsmeting tot satellieten; vanaf elke plek op aarde zijn er minimaal <b>4</b> zichtbaar. Instellen: kaartdatum (WGS 84), eenheden en tijdzone.",a:"Les 5.1 (VBO)"}];
+BANK["F.12"]=[
+{t:"Op de kaart staat dit dieptecijfer (zie beeld). Wat betekent het?",
+ v:'<svg viewBox="0 0 430 130"><rect x="0" y="0" width="430" height="130" fill="#cfe3f2"/><text x="200" y="76" font-size="30" font-weight="bold">2<tspan font-size="19" dy="-9">1</tspan></text><line x1="194" y1="84" x2="238" y2="84" stroke="#1a1a2e" stroke-width="3"/></svg>',
+ o:["Droogvalling: de bodem ligt hier 2,1 m bóven het reductievlak","Diepte 2,1 m onder het reductievlak","Nagestreefde baggerdiepte 2,1 m"],
+ u:"Het <b>onderstreepte</b> cijfer = droogvalling boven het reductievlak (LAT). Zonder streep: diepte ónder LAT; klein verhoogd cijfer = decimeters.",a:"Les 7.1 (1800-serie)"},
+{t:"Bij een schutsluis staat op de 1800-serie het getal 22 in het symbool. Wat is dat?",
+ o:["Het marifoonkanaal van de sluis","De schutlengte in meters","De doorvaartbreedte in meters"],
+ u:"Cijfers bij sluis, brug of havenkantoor zijn <b>VHF-kanalen</b>. En let op: doorvaarthoogten staan op de 1800-serie in meters, op ANWB-binnenwaterkaarten in decimeters.",a:"Les 7.1 (1800-serie)"}];
+BANK["F.13"]=[
+{t:"De gegevens op de kaarten van de 1800-serie veranderen tussentijds. Waar worden die wijzigingen gepubliceerd?",
+ o:["In de Berichten aan Zeevarenden","In de Vaarkrant","In de Wateralmanak deel 2"],
+ u:"De 1800-serie verschijnt jaarlijks, bijgewerkt tot de datum op de <b>binnenzijde van de omslag</b>; daarna houd je hem bij met de <b>Berichten aan Zeevarenden</b>.",a:"Les 7.1 (1800-serie)"},
+{t:"Kaartschaal 1:75.000. Twee havens liggen op de kaart 22 cm uit elkaar. Hoeveel zeemijl is dat ongeveer?",
+ o:["Circa 9 zeemijl","Circa 16,5 zeemijl","Circa 22 zeemijl"],
+ u:"22 cm × 750 m = 16,5 km; gedeeld door 1,852 = <b>± 9 zeemijl</b>. De valkuil is stoppen bij 16,5 (dat zijn kilometers).",a:"Les 7.1 (schaal)"}];
+BANK["F.14"]=[
+{t:"Hoe is de betonningsrichting in het Maritiem Betonningsstelsel systeem-A (IALA-A) vastgesteld?",
+ o:["Als de aanlooprichting vanuit zee naar een haven of riviermonding — met de vloedstroom mee","Van de berg naar de zee, net als bij SIGNI","Per gebied vrij te bepalen door de vaarwegbeheerder"],
+ u:"IALA-A: <b>van zee naar het land, mét de vloed mee</b> — precies tegengesteld aan SIGNI. De tonnen liggen fysiek op dezelfde plek; alleen de kijkrichting draait om.",a:"Les 7.2 (IALA-A)"},
+{t:"Je loopt vanuit zee een betond vaarwater binnen (in de betonningsrichting). Welke tonnen liggen aan stuurboord?",
+ o:["Groene spitse tonnen","Stompe rode tonnen","Bolvormige rood-witte tonnen"],
+ u:"Binnenlopen: <b>rood (stomp) aan bakboord, groen (spits) aan stuurboord</b> — de KVB1-brug 'groen aan stuurboord bij stroomopwaarts varen' blijft kloppen.",a:"Les 7.2 (IALA-A)"},
+{t:"Je vaart een betond vaarwater úít richting zee (tegen de betonningsrichting in). Welke tonnen liggen dan aan bakboord?",
+ o:["Groene spitse tonnen","Stompe rode tonnen","Gele sparboeien"],
+ u:"Uitvarend draait het beeld om: groen ligt nu aan bakboord, rood aan stuurboord.",a:"Les 7.2 (IALA-A)"}];
+BANK["F.15"]=[
+{t:"Je ziet deze ton (zie beeld): stomp, horizontaal rood-groen-rood gestreept met een rode cilinder als topteken. Wat markeert hij?",
+ v:'<svg viewBox="0 0 430 160"><rect x="0" y="0" width="430" height="160" fill="#a9cde6"/><g transform="translate(215,92) scale(1.6)"><path d="M-12,16 L12,16 L12,-14 L-12,-14 Z" fill="#c62828" stroke="#7a1010" stroke-width="1.3"/><rect x="-12" y="-4" width="24" height="9" fill="#2e7d32"/><rect x="-3" y="-26" width="6" height="12" fill="#c62828" stroke="#7a1010"/></g></svg>',
+ o:["De splitsing waarbij het hoofdvaarwater réchts ligt — rood boven, hij hoort bij de rode tonnenrij","De splitsing waarbij het hoofdvaarwater links ligt","Een afzonderlijk gevaar met rondom vaarwater"],
+ u:"<b>Rechts = rood boven</b> (stomp, rode cilinder); links = groen boven (spits, groene kegel). De bovenkleur volgt de tonnenrij van het hoofdvaarwater.",a:"Les 7.2 (scheidingstonnen)"},
+{t:"Je vaart ín de betonningsrichting en nadert een spitse, groen-rood-groene scheidingston met groene kegel (hoofdvaarwater links). Hoe houd je hem om het hoofdvaarwater te volgen?",
+ o:["Aan stuurboord","Aan bakboord","Tijdens vloed aan stuurboord, tijdens eb aan bakboord"],
+ u:"Groen boven = hij hoort bij de groene rij: in de betonningsrichting houd je hem <b>aan stuurboord</b>. Wil je het nevenvaarwater in, dan juist aan de andere kant.",a:"Les 7.2 (scheidingstonnen)"},
+{t:"Hoe markeert IALA-A een splitsing van twee vaarwateren van gelijk belang?",
+ o:["Met een cardinale ton (geel-zwart) bij het obstakel","Met een rood-groen horizontaal gestreepte bolton","Met een gele ton met liggend kruis"],
+ u:"Bij gelijk belang géén rood-groene scheidingston maar een <b>cardinaal</b> — bijvoorbeeld een zuidcardinaal als de bank ten noorden ervan ligt.",a:"Les 7.2 (IALA-A)"}];
+BANK["F.16"]=[
+{t:"Op de Waddenzee zie je een gele boei met zwart ondervlak en dit topteken: twee kegels met de punten omlaag (zie beeld). Waar ligt het veilige vaarwater?",
+ v:'<svg viewBox="0 0 430 170"><rect x="0" y="0" width="430" height="170" fill="#a9cde6"/><g transform="translate(215,108) scale(1.5)"><path d="M-11,18 L11,18 L8,-16 L-8,-16 Z" fill="#f2c500" stroke="#7a5c00" stroke-width="1.3"/><path d="M-10,4 L10,4 L11,18 L-11,18 Z" fill="#1a1a2e"/><line x1="0" y1="-16" x2="0" y2="-32" stroke="#333" stroke-width="2"/><g fill="#1a1a2e"><path d="M-7,-44 L7,-44 L0,-32 Z"/><path d="M-7,-26 L7,-26 L0,-14 Z"/></g></g></svg>',
+ o:["Ten zuiden van de boei — dit is een zuidcardinaal","Ten noorden van de boei","Ten westen van de boei"],
+ u:"Punten omlaag = zwart ónder = <b>zuidcardinaal</b>: passeer aan de zuidzijde. De pijlpunten wijzen altijd naar de zwarte band(en).",a:"Les 7.2 (cardinalen)"},
+{t:"Een boei is geel met één brede zwarte band in het midden. Welke cardinaal is dit?",
+ o:["Westcardinaal (topteken: punten naar elkaar toe)","Oostcardinaal (punten van elkaar af)","Noordcardinaal (punten omhoog)"],
+ u:"Zwart in het <b>midden</b> = punten naar elkaar toe = <b>west</b> ('wespentaille'). Oost heeft juist twee zwarte banden (boven én onder).",a:"Les 7.2 (cardinalen)"},
+{t:"Welk lichtkarakter hoort bij een lichtboei ten óósten van een gevaar?",
+ o:["VQ(3) 5s — drie flitsen, zoals 3 uur op de klok","VQ(6) + LFl 10s","VQ(9) 10s"],
+ u:"Cardinale lichten volgen de klok: N = continu · <b>O = 3</b> · Z = 6 + lange flits · W = 9.",a:"Les 7.2 (cardinalen)"}];
+BANK["F.17"]=[
+{t:"Bij een licht op de kaart staat 'Oc'. Wat zie je?",
+ o:["Een onderbroken licht dat lánger aan dan uit is","Een licht dat korter aan dan uit is","Een licht dat even lang aan als uit is"],
+ u:"Oc (occulting) = vooral áán. Fl (schitterlicht) is het spiegelbeeld: vooral uit. Iso = even lang aan als uit.",a:"Les 7.2 (lichtkarakters)"},
+{t:"Wat betekent 'Iso 4s' bij een licht?",
+ o:["2 seconden aan en 2 seconden uit (periode 4 s)","4 flitsen per periode","4 seconden aan, daarna donker tot de volgende nacht"],
+ u:"Iso = isofase: aan- en uittijd gelijk; de 4s is de volledige periode, dus 2 s aan / 2 s uit.",a:"Les 7.2 (lichtkarakters)"}];
+BANK["F.18"]=[
+{t:"Wanneer is het in Nederland springtij?",
+ o:["Ongeveer twee dagen ná volle maan en ná nieuwe maan","Precies bij eerste en laatste kwartier","Tweemaal per jaar, in voor- en najaar"],
+ u:"Spring ≈ <b>2 dagen ná VM en NM</b> (HW extra hoog, LW extra laag, groot verval, sterke stromen); dood ≈ 2 dagen ná EK en LK. Zo'n twee keer per maand dus.",a:"Les 7.3 (getijden)"},
+{t:"Waarom gebruikt de Hydrografische Dienst LAT als reductievlak van de kaart?",
+ o:["Omdat de waterstand daar vrijwel nooit onder komt — er staat in de praktijk dus bijna altijd méér water dan de kaart aangeeft","Omdat LAT gelijk is aan NAP","Omdat LAT de gemiddelde waterstand is"],
+ u:"LAT = laagste astronomisch berekende tij. Alles op de kaart is daaraan gerelateerd; de rijzing komt er nog bovenop. De afstand NAP↔LAT verschilt per haven.",a:"Les 7.3 (getijden)"}];
+BANK["F.19"]=[
+{t:"Kaartdiepte 0,4 m. De rijzing bij hoogwater doodtij is 2,1 m. Wat is de werkelijke diepte op dat moment?",
+ o:["2,5 m","1,7 m","2,1 m"],
+ u:"Werkelijke diepte = rijzing + kaartdiepte = 2,1 + 0,4 = <b>2,5 m</b> (teken het lagenmodel: LAT → bodem → rijzing).",a:"Les 7.3 (berekeningen)"},
+{t:"Op een wantij staat een droogvalling van 0,5 m (onderstreept cijfer). Rijzing bij HW: 2,0 m. Je diepgang is 1,0 m. Hoeveel water houd je onder de kiel?",
+ o:["0,5 m","1,5 m","2,5 m"],
+ u:"Werkelijke diepte = rijzing − droogvalling = 2,0 − 0,5 = 1,5 m; kielspeling = 1,5 − 1,0 = <b>0,5 m</b>.",a:"Les 7.3 (berekeningen)"},
+{t:"Voor een haven geldt: LAT = NAP − 250 cm. De actuele waterstand is NAP + 10 cm. Wat is de rijzing?",
+ o:["26 dm","24 dm","16 dm"],
+ u:"Rijzing = afstand boven LAT = 250 + 10 = 260 cm = <b>26 dm</b>. RWS-getijtafels geven NAP-standen; tel de NAP–LAT-afstand erbij op.",a:"Les 7.3 (NAP↔LAT)"}];
+BANK["F.20"]=[
+{t:"In een stroomatlaspijl staat '1.2|2.0'. Wat lees je?",
+ o:["Stroomsnelheid 1,2 kn bij doodtij en 2,0 kn bij springtij","Minimale en maximale waterdiepte","Ebsnelheid en vloedsnelheid"],
+ u:"Het cijferpaar = <b>doodtij | springtij</b>; de pijlrichting = stroomrichting. Deze gegevens voeden de constructies van les 6.",a:"Les 7.3 (stroomatlas)"},
+{t:"Uit hoeveel kaartjes bestaat een detail-stroomatlas (HP 33) en waarom?",
+ o:["13 — van 6 uur vóór tot 6 uur ná hoogwater, per uur één kaartje","2 — één voor eb en één voor vloed","24 — één per uur van het etmaal"],
+ u:"13 kaartjes rond HW van de referentiehaven. Kies eerst het juiste uur-kaartje, lees dan richting en spring-/doodtijcijfer.",a:"Les 7.3 (stroomatlas)"}];
+BANK["F.21"]=[
+{t:"De luchtdruk daalt, de wind krimpt en er verschijnen cirruswolken. Wat verwacht je?",
+ o:["Weersverslechtering","Weersverbetering","Geen verandering"],
+ u:"Het klassieke trio: <b>dalende druk + krimpende wind (tegen de klok in) + cirrus</b> als eerste bode. Ruimen = met de klok mee.",a:"Les 7.4 (meteo)"},
+{t:"Wat kenmerkt het weer áchter een koufront?",
+ o:["Heldere lucht, losse stapelwolken, kortstondige buien en W–NW-wind met windstoten","Langdurige motregen onder een gesloten wolkendek","Windstilte en mist"],
+ u:"Koude lucht dringt zich onder de warme: buiig en vlagerig, maar helder tussendoor. Warmtefront = opglijdende warme lucht: stratus en langdurige (mot)regen.",a:"Les 7.4 (fronten)"}];
+BANK["F.22"]=[
+{t:"Waarvan is de variatie afhankelijk?",
+ o:["Van de plaats op aarde (en het jaar) — niet van je koers","Van de voorliggende kompaskoers","Van het staal aan boord"],
+ u:"Variatie = plaatsgebonden (staat op de kaartroos; examenkaart 2° W = −2). <b>Deviatie</b> is juist koersafhankelijk en scheepsgebonden (stuurtafel). Miswijzing = dev + var.",a:"Les 5.2.3 (VBO)"},
+{t:"Je peilt met een handpeilkompas. Welke deviatie gebruik je?",
+ o:["0 — van een los kompas bestaat geen stuurtafel, dus de deviatie is onbekend","De deviatie van het stuurkompas bij de voorliggende koers","De deviatie is gelijk aan de variatie"],
+ u:"Handpeilkompas → dev = 0 (miswijzing = variatie). Gebruik nóóit de stuurtafel van het stuurkompas; elke stuurtafel is uniek.",a:"Les 5/6 (VBO)"}];
+BANK["F.23"]=[
+{t:"KK 100°, deviatie −2°, variatie 2° West. Geen wind, geen stroom. Wat is de grondkoers?",
+ o:["096°","104°","100°"],
+ u:"Links→rechts optellen: 100 − 2 = 98 (MK); 98 − 2 = <b>96° (WK = GrK</b>, want drift en stroom zijn 0).",a:"Koersformule (les 5.3)"},
+{t:"BWK 090°, drift +5°, variatie 3° West, deviatie +7°. Geen stroom. Welke kompaskoers stuur je?",
+ o:["081°","099°","086°"],
+ u:"Rechts→links aftrekken: WK = 90 − 5 = 85; MK = 85 − (−3) = 88; KK = 88 − 7 = <b>81°</b>.",a:"Koersformule (les 5.4)"},
+{t:"Je vaart exact in een lichtenlijn die op de kaart 040° aangeeft. Je stuurkompas toont 037°. Variatie 2° West. Wat is de deviatie bij deze koers?",
+ o:["+5°","−5°","+1°"],
+ u:"WK = 040; MK = WK − var = 40 + 2 = 042; dev = MK − KK = 42 − 37 = <b>+5°</b>. Zo controleer je je stuurtafel.",a:"Lichtenlijn (les 5.5)"}];
+/* ===== BLOK F — open invulvragen (F.24-F.27, 3 pt elk, marge-validatie) =====
+   Rekenkundig oplosbaar met de gegeven data (geen plotwerk nodig); antwoordformaat
+   en marges conform de officiële invulvraag-toleranties. */
+BANK["F.24"]=[
+{typ:"in",t:"Grondkoers uit de kaart: 085°. De stroom zet je 6° naar bakboord weg (−6°), een zuidenwind geeft +4° drift, de variatie is 2° West en de deviatie bij de gevonden magnetische koers is +1°. Welke kompaskoers stuur je? (hele graden)",
+ ans:88,marge:2,fmt:"num",eh:"°",
+ u:"Rechts→links: BWK = 85 − (−6) = 91 · WK = 91 − 4 = 87 · MK = 87 − (−2) = 89 · KK = 89 − 1 = <b>88°</b>.",a:"Koersformule (marge ±2°)"},
+{typ:"in",t:"Grondkoers 300°. Stroom: +5°. Drift door een noordoostenwind: −8°. Variatie 2° West, deviatie bij de magnetische koers −2°. Welke kompaskoers stuur je? (hele graden)",
+ ans:307,marge:2,fmt:"num",eh:"°",
+ u:"BWK = 300 − 5 = 295 · WK = 295 − (−8) = 303 · MK = 303 − (−2) = 305 · KK = 305 − (−2) = <b>307°</b>.",a:"Koersformule (marge ±2°)"},
+{typ:"in",t:"Grondkoers 152°. Er staat geen wind; de stroom zet je 4° naar bakboord weg (−4°). Variatie 2° West, deviatie 0°. Welke kompaskoers stuur je? (hele graden)",
+ ans:158,marge:2,fmt:"num",eh:"°",
+ u:"BWK = 152 − (−4) = 156 · WK = 156 (geen drift) · MK = 156 − (−2) = 158 · KK = <b>158°</b>.",a:"Koersformule (marge ±2°)"}];
+BANK["F.25"]=[
+{typ:"in",t:"Markermeer. Je vertrekt van 52° 28,0' N en vaart pal noord (ware koers 000°) met 4 knopen. Geen wind, geen stroom. Op welke breedte ben je na 1 uur? Vul alléén de minuten in (in tienden, bv. 31,5).",
+ ans:32.0,marge:0.2,fmt:"num",eh:"′ N",
+ u:"4 kn × 1 u = 4 zeemijl = 4 breedteminuten noordwaarts: 28,0' + 4,0' = <b>52° 32,0' N</b>.",a:"Eindpunt (marge ±0,2′)"},
+{typ:"in",t:"Markermeer. Je vertrekt van 52° 41,5' N en vaart pal zuid (ware koers 180°) met 3 knopen, anderhalf uur lang. Geen wind, geen stroom. Op welke breedte ben je dan? Vul alléén de minuten in (in tienden).",
+ ans:37.0,marge:0.2,fmt:"num",eh:"′ N",
+ u:"3 kn × 1,5 u = 4,5 zeemijl zuidwaarts: 41,5' − 4,5' = <b>52° 37,0' N</b>.",a:"Eindpunt (marge ±0,2′)"},
+{typ:"in",t:"Waddenzee. Je vertrekt van 53° 00,2' N en vaart pal noord met 2,5 knopen gedurende 2 uur. Geen wind, geen stroom. Op welke breedte ben je? Vul alléén de minuten in (in tienden).",
+ ans:5.2,marge:0.2,fmt:"num",eh:"′ N",
+ u:"2,5 kn × 2 u = 5 zeemijl: 00,2' + 5,0' = <b>53° 05,2' N</b>.",a:"Eindpunt (marge ±0,2′)"}];
+BANK["F.26"]=[
+{typ:"in",t:"Je log geeft 5,0 knopen aan. Je vaart recht tégen een stroom van 1,4 knopen in. Wat is je snelheid over de grond? (knopen, in tienden)",
+ ans:3.6,marge:0.2,fmt:"num",eh:"kn",
+ u:"Recht tegen de stroom: SOG = 5,0 − 1,4 = <b>3,6 kn</b>. De log meet dóór het water; de GPS zou dit als SOG tonen.",a:"SOG (marge ±0,2 kn)"},
+{typ:"in",t:"Je vaart 3,2 knopen door het water met de stroom (1,1 kn) recht mee. Wat is je snelheid over de grond? (knopen, in tienden)",
+ ans:4.3,marge:0.2,fmt:"num",eh:"kn",
+ u:"Recht mee: SOG = 3,2 + 1,1 = <b>4,3 kn</b>.",a:"SOG (marge ±0,2 kn)"},
+{typ:"in",t:"Je log geeft 4,0 knopen aan. Na precies één uur blijkt uit de kaart dat je 3,4 zeemijl over de grond hebt afgelegd. Wat was je snelheid over de grond? (knopen, in tienden)",
+ ans:3.4,marge:0.2,fmt:"num",eh:"kn",
+ u:"SOG = afgelegde weg over de grond per uur = <b>3,4 kn</b> — de afstand vertrekpunt→eindpunt op de staande rand, niet de logwaarde.",a:"SOG (marge ±0,2 kn)"}];
+BANK["F.27"]=[
+{typ:"in",t:"De afstand tot de haven is 4,8 zeemijl en je snelheid over de grond is 4,0 knopen. Je vertrekt om 10:00 uur. Hoe laat kom je aan? (UU:MM)",
+ ans:"11:12",marge:2,fmt:"tijd",eh:"uur",
+ u:"4,8 ÷ 4,0 = 1,2 uur = 1 uur 12 min (0,1 u = 6 min!) → 10:00 + 1:12 = <b>11:12</b>. Valkuil: 1,2 u is níét 1:20.",a:"ETA (marge ±2 min)"},
+{typ:"in",t:"Wantijpassage. Laagwater is om 07:40; het verval is 2,4 m. Je hebt 1,2 m stijging boven het LW-niveau nodig om veilig te passeren. Gebruik de 1/12-regel: vanaf welk tijdstip kan het? (UU:MM)",
+ ans:"10:40",marge:2,fmt:"tijd",eh:"uur",
+ u:"Stijging per uur: 1/12 = 0,2 · 2/12 = 0,4 · 3/12 = 0,6 → cumulatief 0,2 / 0,6 / <b>1,2 m na 3 uur</b> → 07:40 + 3:00 = <b>10:40</b>.",a:"1/12-regel (marge ±2 min)"},
+{typ:"in",t:"Je passeert om 13:20 een boei; tot je bestemming is het 6,3 zeemijl en je snelheid over de grond is 4,2 knopen. Hoe laat verwacht je aan te komen? (UU:MM)",
+ ans:"14:50",marge:2,fmt:"tijd",eh:"uur",
+ u:"6,3 ÷ 4,2 = 1,5 uur = 1:30 → 13:20 + 1:30 = <b>14:50</b>.",a:"ETA (marge ±2 min)"}];
+/* ===== UITBREIDING v2: derde variant voor alle slots, vierde voor de zware ===== */
+BANK["E.1"].push(
+{t:"Een motorjacht sleept af en toe een vriend naar de haven, maar is niet als sleepboot uitgerust. Is het volgens het SRW een sleepboot?",
+ o:["Nee — de definitie eist het verrichten van sleepdienst of assistentie én de uitrusting als sleepboot","Ja, wie sleept is een sleepboot","Alleen als er tegen betaling wordt gesleept"],
+ u:"Dubbelvereiste: <b>dienst én uitrusting</b>. Let op: een echte sleepboot, duwboot of vissend schip is nooit een 'klein schip', ook niet onder de 20 m.",a:"SRW art. 2 (definities)"});
+BANK["E.2"].push(
+{t:"Je bent met je jacht (9 m, geen radar) niet marifoonplichtig, maar je hebt wél een marifoon aan boord. Wat geldt er dan?",
+ o:["Je bent verplicht hem te gebruiken en uit te luisteren waar dat is voorgeschreven","Vrijwillig aan boord betekent vrij gebruik","Je mag alleen luisteren, niet zenden"],
+ u:"Wie een marifoon hééft, valt onder de gebruiksregels: <b>gebruiken voor inlichtingen en uitluisteren</b> waar voorgeschreven — vrijblijvend is hij nooit.",a:"SRW (marifoonbepalingen)"});
+BANK["E.3"].push(
+{t:"Een kleine motorboot en een kleine roeiboot naderen elkaar op de Westerschelde met gevaar voor aanvaring. Wie wijkt?",
+ o:["De motorboot — de volgorde is: zeil vóór spierkracht vóór motor","De roeiboot, die is het wendbaarst","Het schip dat de ander aan stuurboord heeft"],
+ u:"Tussen kleine schepen onderling wijkt <b>motor voor spierkracht en voor zeil</b>; spierkracht wijkt op zijn beurt voor zeil.",a:"SRW art. 42"});
+BANK["E.4"].push(
+{t:"Je steekt met je jacht de hoofdvaargeul van de Westerschelde over; een binnenvaartschip volgt de geul. Wie gaat vóór?",
+ o:["Het schip ín de vaargeul — geulvolgers gaan vóór op schepen die kruisen, invaren of oversteken","Jij — oversteken gaat vóór doorgaand verkeer","Het schip dat de ander aan bakboord heeft"],
+ u:"<b>Vaargeul-voorrang:</b> wie de geul volgt gaat vóór. Steek bovendien zo vlot en haaks mogelijk over.",a:"SRW art. 9"});
+BANK["E.5"].push(
+{t:"Je motorjacht is 10,5 m lang. Mag je 's nachts het toplicht en heklicht vervangen door één wit rondomschijnend licht?",
+ o:["Ja — onder de 12 m mag dat, maar altijd in combinatie met de boordlichten","Nee, dat mag alleen onder de 7 m","Ja, en de boordlichten mogen dan ook uit"],
+ u:"De <b>12 m-regel</b>: top- + heklicht → één wit rondomlicht, mét boordlichten. De alleen-witlicht-regel (zónder boordlichten) stopt al bij 7 m en ≤ 13 km/u.",a:"SRW art. 41"});
+BANK["E.6"].push(
+{t:"'s Nachts nadert een schip met twee witte toplichten recht boven elkaar, boordlichten en een géél heklicht. Wat is dit?",
+ o:["Een sleepboot met een sleep erachter — het gele licht is het sleeplicht","Een vissersschip met uitstaand tuig","Een schip met politieopdracht"],
+ u:"Zeesleep-conventie: <b>2 toplichten + geel heklicht</b>. Varen er twee of meer sleepboten aan één sleep, dan voert elk er drie. Het gesleepte schip: wit rondomlicht.",a:"SRW (slepen)"});
+BANK["E.7"].push(
+{t:"Je vaart met je jacht van 9 m bij het Oostgat (smalle hoofdvaargeul langs Walcheren). Wat eist het SRW daar van je?",
+ o:["Buiten de hoofdvaargeul blijven waar dat veilig en uitvoerbaar is, de motor direct gebruiksklaar hebben en minstens 6 km/u kunnen varen","Alleen 's nachts buiten de geul blijven","Niets bijzonders: kleine schepen mogen overal varen"],
+ u:"Voor schepen <b>&lt; 12 m</b> gelden bij Oostgat, Sardijngeul en Walsoorden alle drie de eisen; schepen ≥ 12 m in de hoofdvaargeul moeten een voldoende krachtige, gebruiksklare motor hebben.",a:"SRW art. 6/9"});
+BANK["E.8"].push(
+{t:"Je vaart van Breskens naar Waarde (zie kaartje). Met welke reglementen krijg je onderweg te maken?",
+ v:'<svg viewBox="0 0 430 190"><rect x="0" y="0" width="430" height="70" fill="#dfe8d2"/><rect x="0" y="130" width="430" height="60" fill="#dfe8d2"/><path d="M0,70 L430,70 L430,130 L0,130 Z" fill="#a9cde6"/><text x="60" y="30" font-size="10" font-weight="bold">Vlissingen</text><text x="215" y="120" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#134a70">Westerschelde</text><circle cx="60" cy="140" r="6" fill="#134a70"/><text x="60" y="162" text-anchor="middle" font-size="10" font-weight="bold">Breskens</text><text x="230" y="152" text-anchor="middle" font-size="10" font-weight="bold">Terneuzen</text><circle cx="386" cy="66" r="6" fill="#134a70"/><text x="386" y="52" text-anchor="middle" font-size="10" font-weight="bold">Waarde</text><path d="M70,134 Q210,96 378,72" fill="none" stroke="#e07b00" stroke-width="3.5" stroke-dasharray="9,6"/></svg>',
+ o:["Uitsluitend het SRW — dat geldt op de héle Westerschelde, óók ter hoogte van Terneuzen","Het SRW, en bij Terneuzen het SRKGT","Het SRW en op het brede westelijke deel de BVA"],
+ u:"Het SRKGT geldt alleen ín het Kanaal Gent–Terneuzen; de BVA geldt op zee. De hele rivier valt onder <b>één reglement: het SRW</b>.",a:"Toepassingsgebied reglementen"});
+BANK["F.9"].push(
+{t:"Wat is juist over parallellen (breedtecirkels)?",
+ o:["Ze verbinden punten van gelijke breedte en worden richting de polen steeds kleiner","Ze verbinden punten van gelijke lengte","Ze zijn allemaal even lang"],
+ u:"Parallellen: evenwijdig aan de evenaar, krimpen naar de polen (tot 90° N/Z). Meridianen zijn juist allemaal even lang (tot 180° O/W).",a:"Les 5.1 (VBO)"});
+BANK["F.10"].push(
+{t:"Je vaart 6 knopen. Hoeveel kilometer per uur is dat ongeveer?",
+ o:["Ruim 11 km/u (6 × 1,852)","Precies 6 km/u","Ongeveer 3 km/u"],
+ u:"1 knoop = 1 zeemijl per uur = 1,852 km/u → 6 kn ≈ <b>11,1 km/u</b>.",a:"Les 5.1 (VBO)"});
+BANK["F.11"].push(
+{t:"Welke kaartdatum stel je op je GPS in voor gebruik met de Nederlandse zeekaarten?",
+ o:["WGS 84 — de datum die in de kaartlegenda staat","ED 50, de oude Europese standaard","NAP"],
+ u:"Instelvolgorde GPS: <b>kaartdatum (WGS 84)</b>, eenheid van afstand, eenheid van snelheid en de tijdzone. Een waypoint is een opgeslagen geografische positie.",a:"Les 5.1 (VBO)"});
+BANK["F.12"].push(
+{t:"Op de kaart staat een wraksymbool met een gevarenomkadering, zónder dieptevermelding. Wat betekent dit?",
+ o:["Een gevaarlijk wrak waarvan de diepte onbekend is","Een wrak dat bij kaartpeil (gedeeltelijk) zichtbaar is","Een afgedregd en daarmee ongevaarlijk wrak"],
+ u:"Omkadering zonder diepte = <b>gevaarlijk, diepte onbekend</b>. Een getal erbij = minst gelode diepte; met dregbeugel = afgedregd; Mt(s) = mast(en) zichtbaar.",a:"Les 7.1 (1800-serie)"});
+BANK["F.13"].push(
+{t:"Tot welk moment zijn de gegevens van een kaart uit de 1800-serie bijgewerkt?",
+ o:["Tot de datum die op de binnenzijde van de omslag staat","Tot 1 januari van het drukjaar","Tot het moment van aankoop"],
+ u:"De serie verschijnt jaarlijks; de <b>omslagdatum (binnenzijde)</b> is het ijkpunt. Daarna zelf bijwerken met de Berichten aan Zeevarenden.",a:"Les 7.1 (1800-serie)"});
+BANK["F.14"].push(
+{t:"Een vaarwater loopt vanaf zee landinwaarts over in een rivier (IALA-A gaat over in SIGNI). Wat verandert er op die overgang aan de tonnen?",
+ o:["Niets aan de ligging — de tonnen blijven liggen; alleen de betonningsrichting is tegengesteld","De rode en groene tonnen wisselen fysiek van oever","De laterale tonnen maken plaats voor cardinale tonnen"],
+ u:"IALA-A kijkt van zee naar het land (met de vloed mee), SIGNI van de berg naar de zee. <b>Zelfde tonnen, omgekeerde kijkrichting</b> — je rood/groen-beeld klapt om zodra je de definitie omdraait.",a:"Les 7.2 (IALA-A vs. SIGNI)"});
+BANK["F.15"].push(
+{t:"In de betonningsrichting nader je een stompe rood-groen-rode scheidingston (rood boven, rode cilinder). Je wilt het névenvaarwater in. Hoe houd je de ton?",
+ o:["Aan stuurboord — voor het hoofdvaarwater zou je hem juist aan bakboord houden","Aan bakboord, net als voor het hoofdvaarwater","Dat maakt niet uit; ruim passeren volstaat"],
+ u:"Rood boven = hoofdvaarwater réchts; in de betonningsrichting houd je hem daarvoor aan bakboord. Het nevenvaarwater ligt aan de andere kant: ton <b>aan stuurboord</b>. Loop altijd de drie-stappen-check af.",a:"Les 7.2 (scheidingstonnen)"});
+BANK["F.16"].push(
+{t:"Een cardinale lichtboei toont 's nachts een wit, ononderbroken zeer snel flikkerlicht (VQ). Welke cardinaal is dit?",
+ o:["De noordcardinaal — 12 uur op de klok: continu flikkeren","De zuidcardinaal","De westcardinaal"],
+ u:"De klok: <b>N = continu</b> · O = 3 flitsen · Z = 6 + lange flits · W = 9. De LFl bij zuid voorkomt mistellen tussen 6 en 9.",a:"Les 7.2 (cardinalen)"});
+BANK["F.17"].push(
+{t:"Waarom volgt er bij het licht van een zuidcardinaal een lange schittering (LFl) op de zes flitsen?",
+ o:["Zodat je zes flitsen niet verwart met negen — de lange flits markeert het einde van de reeks","Omdat zuid het gevaarlijkste kwadrant is","Om het bereik van het licht te vergroten"],
+ u:"VQ(6)+LFl of Q(6)+LFl: de <b>lange flits (± 2 s)</b> sluit de telreeks af en onderscheidt zuid (6) van west (9).",a:"Les 7.2 (lichtkarakters)"});
+BANK["F.18"].push(
+{t:"Wat is het 'verval'?",
+ o:["Het hoogteverschil tussen hoogwater en het eerstvolgende laagwater","De jaarlijkse daling van de zeebodem","Het vaste verschil tussen LAT en NAP"],
+ u:"Verval = HW − eerstvolgend LW. Bij <b>springtij</b> is het verval groot en zijn de eb- en vloedstromen het sterkst.",a:"Les 7.3 (getijden)"});
+BANK["F.19"].push(
+{t:"Kaartdiepte 1,8 m; rijzing op dit moment 0,9 m; je diepgang is 1,2 m. Hoeveel water houd je onder de kiel?",
+ o:["1,5 m","0,9 m","2,1 m"],
+ u:"Werkelijke diepte = 1,8 + 0,9 = 2,7 m; kielspeling = 2,7 − 1,2 = <b>1,5 m</b>.",a:"Les 7.3 (berekeningen)"});
+BANK["F.20"].push(
+{t:"Volgens de 1/12-regel: welk deel van het verval is twee uur ná hoogwater verstreken?",
+ o:["3/12 — een kwart (1/12 in het eerste uur + 2/12 in het tweede)","2/12","6/12 — de helft"],
+ u:"Per uur 1-2-3-3-2-1 twaalfden; cumulatief 1/12 · <b>3/12</b> · 6/12 · 9/12 · 11/12 · 12/12.",a:"Les 7.3 (1/12-regel)"});
+BANK["F.21"].push(
+{t:"Op het water zie je overal witte schuimkoppen. Welke windkracht hoort daarbij?",
+ o:["5 Bft — vrij krachtige wind","3 Bft — matige wind","8 Bft — stormachtige wind"],
+ u:"<b>Overal schuimkoppen = 5 Bft.</b> Het rijtje: 5 vrij krachtig · 6 krachtig (vanaf hier windwaarschuwingen) · 7 hard.",a:"Les 7.4 (Beaufort)"});
+BANK["F.22"].push(
+{t:"Wat is de miswijzing?",
+ o:["Deviatie + variatie — de hoek tussen de kompaskoers en de ware koers","Alleen de variatie","De hoek tussen grondkoers en ware koers"],
+ u:"Miswijzing = <b>dev + var</b>. Bij een handpeilkompas (dev 0) is de miswijzing dus gelijk aan de variatie.",a:"Les 5.2.3 (VBO)"});
+BANK["F.23"].push(
+{t:"KK 220°, deviatie +2°, variatie 2° West, drift −6°, stroom +9°. Wat is de grondkoers?",
+ o:["223°","217°","229°"],
+ u:"Links→rechts: 220 + 2 = 222 (MK) · − 2 = 220 (WK) · − 6 = 214 (BWK) · + 9 = <b>223° (GrK)</b>.",a:"Koersformule (les 5.3)"});
+BANK["F.24"].push(
+{typ:"in",t:"Grondkoers 048°. De stroom zet je 5° naar bakboord (−5°), de drift is +6°, variatie 2° West en de deviatie bij de magnetische koers is +3°. Welke kompaskoers stuur je? (hele graden)",
+ ans:46,marge:2,fmt:"num",eh:"°",
+ u:"BWK = 48 − (−5) = 53 · WK = 53 − 6 = 47 · MK = 47 − (−2) = 49 · KK = 49 − 3 = <b>46°</b>.",a:"Koersformule (marge ±2°)"});
+BANK["F.25"].push(
+{typ:"in",t:"Markermeer. Je vertrekt van 52° 18,4' N en vaart pal noord met 3,6 knopen gedurende anderhalf uur. Geen wind, geen stroom. Op welke breedte ben je? Vul alléén de minuten in (in tienden).",
+ ans:23.8,marge:0.2,fmt:"num",eh:"′ N",
+ u:"3,6 × 1,5 = 5,4 zeemijl = 5,4': 18,4' + 5,4' = <b>52° 23,8' N</b>.",a:"Eindpunt (marge ±0,2′)"});
+BANK["F.26"].push(
+{typ:"in",t:"Tussen twee kruispeilingen leg je 2,7 zeemijl over de grond af, in precies 45 minuten. Wat was je snelheid over de grond? (knopen, in tienden)",
+ ans:3.6,marge:0.2,fmt:"num",eh:"kn",
+ u:"45 min = 0,75 u → SOG = 2,7 ÷ 0,75 = <b>3,6 kn</b>.",a:"SOG (marge ±0,2 kn)"});
+BANK["F.27"].push(
+{typ:"in",t:"Om 09:35 passeer je een boei. Tot de haven is het 5,4 zeemijl; je snelheid over de grond is 3,6 knopen. Hoe laat kom je aan? (UU:MM)",
+ ans:"11:05",marge:2,fmt:"tijd",eh:"uur",
+ u:"5,4 ÷ 3,6 = 1,5 u = 1:30 → 09:35 + 1:30 = <b>11:05</b>.",a:"ETA (marge ±2 min)"});
+
+/* ===== ENGINE ===== */
+const $=id=>document.getElementById(id);
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function parseNum(s){s=(s||"").trim().replace(",",".").replace("°","").replace("'","");const v=parseFloat(s);return isNaN(v)?null:v}
+function parseTijd(s){const m=(s||"").trim().match(/^(\d{1,2})[:.](\d{2})$/);return m?(+m[1])*60+(+m[2]):null}
+function tijdNaarMin(s){const m=s.match(/^(\d{1,2}):(\d{2})$/);return (+m[1])*60+(+m[2])}
+function checkInvul(q,inp){
+ if(q.fmt==="tijd"){const g=parseTijd(inp);if(g===null)return{ok:false,leeg:true};return{ok:Math.abs(g-tijdNaarMin(q.ans))<=q.marge}}
+ const g=parseNum(inp);if(g===null)return{ok:false,leeg:true};return{ok:Math.abs(g-q.ans)<=q.marge}}
+function qhtml(q,slot,pt,nr,mode){
+ let h='<div class="kaart" id="k'+nr+'"><div class="qkop">Vraag '+(nr+1)+' · slot '+slot+' · '+pt+' punt'+(pt>1?'en':'')+(slot[0]==="E"?' · blok E':' · blok F')+'</div>';
+ h+='<div class="qtekst">'+q.t+'</div>';
+ if(q.v)h+='<div class="qv">'+q.v+'</div>';
+ if(q.typ==="in"){
+  h+='<div class="invulrij"><input id="in'+nr+'" placeholder="'+(q.fmt==="tijd"?"UU:MM":"getal")+'" autocomplete="off"> <b>'+q.eh+'</b> <span class="marge">marge: ±'+q.marge+(q.fmt==="tijd"?" min":" "+q.eh)+'</span></div>';
+ }else{
+  q._ord.forEach((oi,k)=>{h+='<label class="optie" id="o'+nr+'_'+k+'"><input type="radio" name="q'+nr+'" value="'+oi+'">'+q.o[oi]+'</label>'});
+ }
+ h+='<div class="uitleg" id="u'+nr+'">'+q.u+' <span class="art">— '+q.a+'</span></div>';
+ if(mode==="leer")h+='<div style="margin-top:10px"><button class="sec" onclick="leerCheck('+nr+')">Controleer</button> <button class="prim" onclick="leerVolgende()" style="display:none" id="vlg'+nr+'">Volgende ▶</button></div>';
+ return h+'</div>'}
+let EX=null,TIMER=null;
+function startExamen(){
+ $("hoofdmenu").style.display="none";
+ EX={vragen:SLOTS.map(([slot,pt])=>{const q=Object.assign({},pick(BANK[slot]));if(!q.typ)q._ord=shuf(q.o.map((_,i)=>i));return{slot,pt,q}}),einde:Date.now()+90*60*1000};
+ let h='<div class="voortgang">Proefexamen: 27 vragen · 50 punten · cesuur 35 · 90 minuten. Succes!</div>';
+ EX.vragen.forEach((v,i)=>h+=qhtml(v.q,v.slot,v.pt,i,"examen"));
+ h+='<button class="groen" style="font-size:16px" onclick="lever()">✔ Inleveren</button>';
+ $("app").innerHTML=h;$("timer").style.display="block";window.scrollTo(0,0);
+ TIMER=setInterval(()=>{const r=Math.max(0,EX.einde-Date.now());const m=Math.floor(r/60000),s=Math.floor(r%60000/1000);
+  $("timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  if(r<10*60*1000)$("timer").classList.add("laat");
+  if(r<=0){clearInterval(TIMER);lever(true)}},500)}
+function lever(auto){
+ clearInterval(TIMER);$("timer").style.display="none";
+ let tot=0,blok={E:0,F:0},max={E:0,F:0},rev="";
+ EX.vragen.forEach((v,i)=>{
+  const q=v.q,b=v.slot[0];max[b]+=v.pt;let goed=false,gegeven="—";
+  if(q.typ==="in"){const inp=$("in"+i)?$("in"+i).value:"";gegeven=inp||"—";goed=checkInvul(q,inp).ok;}
+  else{const sel=document.querySelector('input[name="q'+i+'"]:checked');
+   if(sel){gegeven=q.o[+sel.value];goed=(+sel.value===0)}}
+  if(goed){tot+=v.pt;blok[b]+=v.pt}
+  rev+='<div class="kaart"><div class="qkop">Vraag '+(i+1)+' · '+v.slot+' · '+(goed?'<span style="color:#1e6b30">✔ goed (+'+v.pt+' pt)</span>':'<span style="color:#c62828">✘ fout (0/'+v.pt+' pt)</span>')+'</div>'
+   +'<div class="qtekst" style="font-size:13px">'+q.t+'</div>'+(q.v?'<div class="qv">'+q.v+'</div>':'')
+   +'<div style="font-size:12.5px">Jouw antwoord: <b>'+gegeven+'</b><br>Juist: <b style="color:#1e6b30">'+(q.typ==="in"?q.ans+" "+q.eh+" (±"+q.marge+(q.fmt==="tijd"?" min":"")+")":q.o[0])+'</b></div>'
+   +'<div class="uitleg" style="display:block">'+q.u+' <span class="art">— '+q.a+'</span></div></div>'});
+ const gesl=tot>=35;
+ $("app").innerHTML='<div id="score"><div class="groot">'+tot+' / 50 punten — '+(gesl?'GESLAAGD 🎉':'gezakt')+'</div>'
+  +(auto?'<div>⏱ De tijd was om; het examen is automatisch ingeleverd.</div>':'')
+  +'<div>Cesuur: 35 punten (70%).</div>'
+  +'<span class="blokscore">Blok E (SRW): '+blok.E+' / '+max.E+'</span><span class="blokscore">Blok F (navigatie): '+blok.F+' / '+max.F+'</span></div>'
+  +'<div class="menu"><button class="prim" onclick="location.reload()">↺ Terug naar het menu</button></div>'
+  +'<h2 style="font-size:16px">Nabespreking</h2>'+rev;
+ window.scrollTo(0,0)}
+let LEER=null;
+function startLeer(blok){
+ $("hoofdmenu").style.display="none";
+ LEER={slots:SLOTS.filter(s=>!blok||s[0][0]===blok),nr:0,goed:0,tot:0};
+ leerVolgende(true)}
+function leerVolgende(eerste){
+ const [slot,pt]=pick(LEER.slots);const q=Object.assign({},pick(BANK[slot]));if(!q.typ)q._ord=shuf(q.o.map((_,i)=>i));
+ LEER.q=q;LEER.slot=slot;LEER.pt=pt;LEER.nr++;
+ $("app").innerHTML='<div class="voortgang">Leermodus · vraag '+LEER.nr+' · score tot nu: '+LEER.goed+' van '+LEER.tot+' <button class="sec" style="padding:4px 10px;font-size:12px" onclick="location.reload()">stoppen</button></div>'+qhtml(q,slot,pt,0,"leer");
+ window.scrollTo(0,0)}
+function leerCheck(nr){
+ const q=LEER.q;LEER.tot++;let goed=false;
+ if(q.typ==="in"){const r=checkInvul(q,$("in0").value);goed=r.ok;
+  $("in0").style.borderColor=goed?"#1e6b30":"#c62828";$("in0").style.background=goed?"#e3f2e6":"#fde8e8";
+ }else{const sel=document.querySelector('input[name="q0"]:checked');if(!sel){LEER.tot--;return}
+  goed=(+sel.value===0);
+  q._ord.forEach((oi,k)=>{const el=$("o0_"+k);if(oi===0)el.classList.add("goed");else if(sel&&+sel.value===oi&&!goed)el.classList.add("fout")})}
+ if(goed)LEER.goed++;
+ $("u0").style.display="block";$("vlg0").style.display="inline-block"}
+</script>
+</body>
+</html>

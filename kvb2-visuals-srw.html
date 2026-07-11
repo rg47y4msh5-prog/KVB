@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KVB2 Visualbibliotheek — Batch 3: SRW (les 8)</title>
+<style>
+ body{font-family:Helvetica,Arial,sans-serif;background:#f4f7fa;color:#1a1a2e;margin:0;padding:24px}
+ h1{font-size:21px}h2{font-size:16px;border-bottom:2px solid #1a5e8f;padding-bottom:4px;margin-top:34px}
+ .intro{background:#fff;border-left:4px solid #1a5e8f;padding:10px 14px;border-radius:6px;max-width:900px;font-size:13.5px}
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:18px;margin-top:14px}
+ .card{background:#fff;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.12);padding:12px}
+ .card h3{font-size:13.5px;margin:2px 0 8px}
+ .tag{display:inline-block;font-size:11px;font-weight:bold;border-radius:4px;padding:2px 7px;margin-left:6px;vertical-align:middle}
+ .vraag{background:#fde8e8;color:#a12020}.uitleg{background:#e3f2e6;color:#1e6b30}
+ .cap{font-size:12px;color:#444;margin-top:6px;line-height:1.4}
+ svg{width:100%;height:auto;background:#bfd9ec;border-radius:6px}
+ svg.diagram{background:#eef3f8}
+ svg.nacht{background:#16202e}
+</style>
+</head>
+<body>
+<h1>KVB2 Visualbibliotheek — Batch 3: Scheepvaartreglement Westerschelde <small>(les 8 · blok E)</small></h1>
+<div class="intro">Conventies als in batch 1–2. Nachtbeelden op donkere achtergrond; lichten als gekleurde stippen op een mastschema. Centraal in deze batch: de <b>BPR↔SRW-flips</b> — het SRW is BPR + BVA, en juist de verschillen zijn examenstof.</div>
+
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <marker id="ah" viewBox="0 0 10 10" refX="7.5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+  <g id="kschip"><path d="M-32,-11 L14,-11 Q32,-11 32,0 Q32,11 14,11 L-32,11 Z" fill="#f5f5f0" stroke="#333" stroke-width="2"/><rect x="-24" y="-6" width="20" height="12" rx="3" fill="#d8dde3" stroke="#333"/></g>
+  <g id="gschip"><path d="M-72,-15 L52,-15 Q72,-15 72,0 Q72,15 52,15 L-72,15 Z" fill="#e3a44a" stroke="#5a3d10" stroke-width="2"/><rect x="-68" y="-9" width="16" height="18" rx="2" fill="#f2e4c8" stroke="#5a3d10"/><rect x="-44" y="-9" width="80" height="18" rx="2" fill="#c9871f" stroke="#5a3d10"/></g>
+  <g id="zboot"><path d="M-26,-9 L14,-9 Q26,-9 26,0 Q26,9 14,9 L-26,9 Z" fill="#f5f5f0" stroke="#333" stroke-width="2"/><circle cx="2" cy="0" r="2.5" fill="#333"/></g>
+  <g id="gzeil"><path d="M-58,-13 L42,-13 Q58,-13 58,0 Q58,13 42,13 L-58,13 Z" fill="#f2ead6" stroke="#5a4a20" stroke-width="2"/><circle cx="0" cy="0" r="3" fill="#5a4a20"/><line x1="0" y1="0" x2="-40" y2="9" stroke="#5a4a20" stroke-width="3"/></g>
+ </defs>
+</svg>
+
+<h2>A. Gebied en reglementen</h2>
+<div class="grid">
+<div class="card"><h3>A1 · Reglementenkaart ruim water <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="diagram">
+ <rect x="20" y="30" width="190" height="94" rx="8" fill="#dceafa" stroke="#1a5e8f"/>
+ <text x="115" y="52" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1a5e8f">BPR</text>
+ <text x="115" y="70" text-anchor="middle" font-size="9.5">Waddenzee · IJsselmeer</text>
+ <text x="115" y="84" text-anchor="middle" font-size="9.5">Markermeer · Oosterschelde</text>
+ <text x="115" y="98" text-anchor="middle" font-size="9.5">+ vrijwel al het binnenwater</text>
+ <rect x="222" y="30" width="188" height="94" rx="8" fill="#fde8e8" stroke="#a12020"/>
+ <text x="316" y="52" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#a12020">SRW</text>
+ <text x="316" y="70" text-anchor="middle" font-size="9.5">de héle Westerschelde</text>
+ <text x="316" y="84" text-anchor="middle" font-size="9.5">ook ter hoogte van Terneuzen</text>
+ <text x="316" y="98" text-anchor="middle" font-size="9.5">= combinatie BPR + BVA</text>
+ <rect x="20" y="136" width="190" height="88" rx="8" fill="#e6f2e6" stroke="#1e6b30"/>
+ <text x="115" y="158" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1e6b30">SRE (+ BVA)</text>
+ <text x="115" y="176" text-anchor="middle" font-size="9.5">Eemsmonding (NL/D)</text>
+ <text x="115" y="190" text-anchor="middle" font-size="9.5">áánvulling op de BVA:</text>
+ <text x="115" y="204" text-anchor="middle" font-size="9.5">daar gelden ze sámen</text>
+ <rect x="222" y="136" width="188" height="88" rx="8" fill="#f2f2f2" stroke="#888"/>
+ <text x="316" y="158" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#666">BVA</text>
+ <text x="316" y="176" text-anchor="middle" font-size="9.5">op zee (Noordzee)</text>
+ <text x="316" y="190" text-anchor="middle" font-size="9.5">buiten de KVB2-examenstof</text>
+ <text x="215" y="244" text-anchor="middle" font-size="10" font-weight="bold">routes: Breskens→Waarde = alléén SRW · Lauwersmeer→Delfzijl = BPR + SRE + BVA</text>
+</svg>
+<div class="cap">Routevragen over ruim water krijgen in de oefenbank een kaartje (A.3-afspraak); dit paneel is de sleutel.</div></div>
+
+<div class="card"><h3>A2 · Voorzorgsgebied Vlissingen <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 240">
+ <rect x="0" y="0" width="430" height="70" fill="#dfe8d2"/>
+ <text x="90" y="30" font-size="10" font-weight="bold">Vlissingen</text>
+ <g transform="translate(196,34)"><rect x="-5" y="-20" width="10" height="20" fill="#8a919b"/><circle cy="-28" r="7" fill="#f2c500" stroke="#8a6d00" stroke-width="2"><animate attributeName="opacity" values="1;.2;1" dur="1s" repeatCount="indefinite"/></circle></g>
+ <text x="212" y="24" font-size="9" font-weight="bold" fill="#7a5c00">radartoren: geel schitterlicht =</text>
+ <text x="212" y="36" font-size="9" font-weight="bold" fill="#7a5c00">schepen binnendoor via Sardijngeul/Oostgat</text>
+ <line x1="20" y1="140" x2="410" y2="140" stroke="#1a1a2e" stroke-width="2" stroke-dasharray="10,6"/>
+ <text x="30" y="132" font-size="9.5" font-weight="bold">denkbeeldige lijn (½ mijl uit de havenhoofden)</text>
+ <path d="M60,180 L170,180" stroke="#1e6b30" stroke-width="3.4" marker-end="url(#ah)"/>
+ <text x="66" y="202" font-size="10" font-weight="bold" fill="#1e6b30">naar binnen (oost): ten ZUIDEN van de lijn</text>
+ <path d="M370,104 L260,104" stroke="#e07b00" stroke-width="3.4" marker-end="url(#ah)"/>
+ <text x="196" y="92" font-size="10" font-weight="bold" fill="#7a4400">naar zee (west): ten NOORDEN van de lijn</text>
+ <text x="215" y="230" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#a12020">in het hele gebied: ankerverbod · vissers hinderen grote schepen niet</text>
+</svg>
+<div class="cap">Druk knooppunt zee ↔ Antwerpen: de lijn scheidt oost- en westgaand verkeer.</div></div>
+
+<div class="card"><h3>A3 · Kabel: anker- en sleepverbod <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 210">
+ <rect x="0" y="150" width="430" height="60" fill="#c9b489"/>
+ <path d="M20,168 Q120,184 215,176 Q320,168 410,180" fill="none" stroke="#1a1a2e" stroke-width="3" stroke-dasharray="2,6"/>
+ <g transform="translate(60,90)"><line x1="0" y1="0" x2="0" y2="58" stroke="#6b4a2b" stroke-width="4"/><rect x="-22" y="-34" width="44" height="34" fill="#f2c500" stroke="#7a5c00" stroke-width="2"/><text y="-9" text-anchor="middle" font-size="20" font-weight="bold">K</text></g>
+ <g stroke="#c22222" stroke-width="2"><line x1="120" y1="60" x2="120" y2="150"/><line x1="320" y1="60" x2="320" y2="150"/></g>
+ <path d="M124,66 L316,66" stroke="#c22222" stroke-width="2" marker-start="url(#ah)" marker-end="url(#ah)"/>
+ <text x="220" y="54" text-anchor="middle" font-size="11" font-weight="bold" fill="#a12020">200 m aan weerszijden</text>
+ <g transform="translate(220,110)"><use href="#kschip" transform="scale(.85)"/><line x1="0" y1="10" x2="0" y2="34" stroke="#c22222" stroke-width="2"/><path d="M-6,34 q6,10 12,0" fill="none" stroke="#c22222" stroke-width="2"/><line x1="-16" y1="14" x2="18" y2="44" stroke="#c22222" stroke-width="3"/><line x1="-16" y1="44" x2="18" y2="14" stroke="#c22222" stroke-width="3"/></g>
+ <text x="220" y="198" text-anchor="middle" font-size="10.5" font-weight="bold">niet ankeren en niets over de grond slepen (ook geen vistuig)</text>
+</svg>
+<div class="cap">Het gele bord met zwarte K markeert de kabelkruising; de verboden zone is 200 m.</div></div>
+</div>
+
+<h2>B. Voorrang: de BPR↔SRW-flips</h2>
+<div class="grid">
+<div class="card"><h3>B1 · Gestrekte koers vs. groot schip <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250">
+ <line x1="215" y1="10" x2="215" y2="216" stroke="#fff" stroke-width="2"/>
+ <text x="110" y="26" text-anchor="middle" font-size="11.5" font-weight="bold">BPR (KVB1)</text>
+ <use href="#kschip" transform="translate(74,120) scale(.85)"/>
+ <line x1="104" y1="120" x2="150" y2="120" stroke="#1e6b30" stroke-width="3" marker-end="url(#ah)"/>
+ <use href="#gschip" transform="translate(140,206) rotate(-90) scale(.62)"/>
+ <path d="M140,158 C140,132 128,120 108,116" fill="none" stroke="#c22222" stroke-width="2.6" stroke-dasharray="7,5" marker-end="url(#ah)"/>
+ <text x="110" y="238" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e6b30">klein op gestrekte koers sb-wal gaat vóór</text>
+ <text x="322" y="26" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#a12020">SRW</text>
+ <use href="#kschip" transform="translate(286,120) scale(.85)"/>
+ <path d="M316,120 C346,120 356,134 362,152" fill="none" stroke="#c22222" stroke-width="2.6" stroke-dasharray="7,5" marker-end="url(#ah)"/>
+ <use href="#gschip" transform="translate(352,206) rotate(-90) scale(.62)"/>
+ <line x1="352" y1="158" x2="352" y2="96" stroke="#1e6b30" stroke-width="3" marker-end="url(#ah)"/>
+ <text x="322" y="238" text-anchor="middle" font-size="10" font-weight="bold" fill="#a12020">klein wijkt áltijd voor groot</text>
+</svg>
+<div class="cap">De gestrekte-koersregel bestaat in het SRW alleen nog tussen kleine schepen onderling.</div></div>
+
+<div class="card"><h3>B2 · Grote schepen onderling: zeil vs. motor <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 230">
+ <line x1="215" y1="10" x2="215" y2="196" stroke="#fff" stroke-width="2"/>
+ <text x="110" y="26" text-anchor="middle" font-size="11.5" font-weight="bold">BPR</text>
+ <use href="#gzeil" transform="translate(100,90) scale(.8)"/>
+ <line x1="146" y1="90" x2="184" y2="90" stroke="#1e6b30" stroke-width="3" marker-end="url(#ah)"/>
+ <use href="#gschip" transform="translate(110,170) scale(.6)"/>
+ <path d="M154,170 C176,170 184,158 188,146" fill="none" stroke="#c22222" stroke-width="2.6" stroke-dasharray="7,5" marker-end="url(#ah)"/>
+ <text x="110" y="212" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e6b30">groot zeil gaat vóór groot motor</text>
+ <text x="322" y="26" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#a12020">SRW</text>
+ <use href="#gzeil" transform="translate(312,90) scale(.8)"/>
+ <path d="M358,90 C380,90 388,102 392,114" fill="none" stroke="#c22222" stroke-width="2.6" stroke-dasharray="7,5" marker-end="url(#ah)"/>
+ <use href="#gschip" transform="translate(322,170) scale(.6)"/>
+ <line x1="366" y1="170" x2="404" y2="170" stroke="#1e6b30" stroke-width="3" marker-end="url(#ah)"/>
+ <text x="322" y="212" text-anchor="middle" font-size="10" font-weight="bold" fill="#a12020">groot zeil wíjkt voor groot motor</text>
+</svg>
+<div class="cap">De beroepsvaart-flip van de Westerschelde: het grote zeilschip verliest er zijn BPR-voorrang op het grote motorschip.</div></div>
+
+<div class="card"><h3>B3 · Voorrang hebben = koers behouden <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 190" class="diagram">
+ <use href="#kschip" transform="translate(120,96)"/>
+ <line x1="152" y1="96" x2="240" y2="96" stroke="#1e6b30" stroke-width="3.4" marker-end="url(#ah)"/>
+ <text x="176" y="82" font-size="11" font-weight="bold" fill="#1e6b30">koers: vasthouden</text>
+ <rect x="272" y="66" width="130" height="60" rx="8" fill="#fff" stroke="#1a5e8f"/>
+ <text x="337" y="90" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a5e8f">gashendel: vrij</text>
+ <text x="337" y="108" text-anchor="middle" font-size="10">snelheid mág wijzigen</text>
+ <text x="215" y="162" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#a12020">BPR en BVA: koers én vaart behouden — SRW: alleen de koers</text>
+</svg>
+<div class="cap">En redt de wijker het alléén niet: dan moet ook het voorranghebbende schip meewerken om de aanvaring te voorkomen.</div></div>
+
+<div class="card"><h3>B4 · Keerseinen (en opdraaien) <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 230" class="diagram">
+ <g font-size="11" font-weight="bold">
+ <text x="24" y="48">attentie</text><rect x="150" y="36" width="70" height="14" rx="3" fill="#1a5e8f"/>
+ <text x="24" y="90">keren over stuurboord</text><rect x="150" y="78" width="70" height="14" rx="3" fill="#1a5e8f"/><rect x="228" y="78" width="16" height="14" rx="3" fill="#1a5e8f"/>
+ <text x="24" y="132">keren over bakboord</text><rect x="150" y="120" width="70" height="14" rx="3" fill="#1a5e8f"/><rect x="228" y="120" width="16" height="14" rx="3" fill="#1a5e8f"/><rect x="252" y="120" width="16" height="14" rx="3" fill="#1a5e8f"/>
+ </g>
+ <text x="330" y="48" font-size="10" fill="#666">1× lang</text>
+ <text x="330" y="90" font-size="10" fill="#666">lang + 1 kort</text>
+ <text x="330" y="132" font-size="10" fill="#666">lang + 2 kort</text>
+ <text x="215" y="172" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#a12020">BPR-flip: dáár is 1 kort = sb uit en 2 kort = bb uit, zónder lange stoot</text>
+ <text x="215" y="200" text-anchor="middle" font-size="10.5" font-weight="bold">opdraaien (vóór → tegen stroom) heeft voorrang · kop voor nemen niet</text>
+ <text x="215" y="220" text-anchor="middle" font-size="10">slecht zicht: motorschip dat vaart loopt → elke ≤ 2 min één lange stoot</text>
+</svg>
+<div class="cap">Hoor je op de Westerschelde een lange stoot met korte(n) erachter, dan gaat iemand keren — en de opdraaier gaat vóór.</div></div>
+
+<div class="card"><h3>B5 · Engte mét stroom: gaande houden <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 240">
+ <path d="M0,40 L150,40 Q200,52 230,52 L430,52 L430,190 L230,190 Q200,190 150,202 L0,202 Z" fill="#a9cde6"/>
+ <rect x="0" y="0" width="430" height="40" fill="#dfe8d2"/><rect x="0" y="202" width="430" height="38" fill="#dfe8d2"/>
+ <line x1="40" y1="121" x2="120" y2="121" stroke="#134a70" stroke-width="6" marker-end="url(#ah)"/>
+ <text x="44" y="106" font-size="10" font-weight="bold" fill="#134a70">stroom</text>
+ <use href="#kschip" transform="translate(330,90) rotate(180) scale(.9)"/>
+ <line x1="296" y1="90" x2="240" y2="90" stroke="#1e6b30" stroke-width="3" marker-end="url(#ah)"/>
+ <text x="330" y="66" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e6b30">vóór stroom: vaart dóór</text>
+ <use href="#kschip" transform="translate(150,160) scale(.9)"/>
+ <g stroke="#c22222" stroke-width="2.4"><line x1="184" y1="160" x2="214" y2="160" marker-end="url(#ah)"/><line x1="118" y1="160" x2="88" y2="160" marker-end="url(#ah)"/></g>
+ <text x="150" y="196" text-anchor="middle" font-size="10" font-weight="bold" fill="#a12020">tégen stroom: gaande houden = stroom doodvaren (stil t.o.v. de grond)</text>
+</svg>
+<div class="cap">Zonder stroom, in een nauwe bocht: het schip met de búitenbocht aan stuurboord vervolgt zijn weg; de ander wacht.</div></div>
+</div>
+
+<h2>C. Lichten en dagmerken (SRW)</h2>
+<div class="grid">
+<div class="card"><h3>C1 · Kleine motorboot: drie niveaus <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="nacht">
+ <g font-size="9.5" fill="#dfe8f2" text-anchor="middle" font-weight="bold">
+ <g transform="translate(90,120)"><line x1="0" y1="60" x2="0" y2="-52" stroke="#5a6a7c" stroke-width="3"/><circle cy="-58" r="7" fill="#fff"/><g transform="translate(0,40)"><circle cx="-9" r="6" fill="#2e7d32"/><circle cx="9" r="6" fill="#c62828"/></g><text y="92">minimaal</text><text y="106" font-size="8.5">boordlantaarn + wit rondom (≥1 m hoger)</text></g>
+ <g transform="translate(215,120)"><line x1="0" y1="60" x2="0" y2="-52" stroke="#5a6a7c" stroke-width="3"/><path d="M-8,-58 A8,8 0 1 1 8,-58 Z" fill="#fff"/><g transform="translate(0,40)"><circle cx="-9" r="6" fill="#2e7d32"/><circle cx="9" r="6" fill="#c62828"/></g><circle cy="66" r="5" fill="#fff"/><text y="92">tussenvorm</text><text y="106" font-size="8.5">toplicht (225°) + heklicht apart</text></g>
+ <g transform="translate(340,120)"><line x1="0" y1="60" x2="0" y2="-52" stroke="#5a6a7c" stroke-width="3"/><path d="M-8,-58 A8,8 0 1 1 8,-58 Z" fill="#fff"/><circle cx="-26" cy="40" r="6" fill="#2e7d32"/><circle cx="26" cy="40" r="6" fill="#c62828"/><circle cy="66" r="5" fill="#fff"/><text y="92">maximaal</text><text y="106" font-size="8.5">gescheiden boordlichten (≈ groot schip)</text></g>
+ </g>
+ <text x="215" y="30" text-anchor="middle" font-size="11" font-weight="bold" fill="#dfe8f2">&lt; 12 m: toplicht + heklicht mag één wit rondomlicht zijn (mét boordlichten)</text>
+ <text x="215" y="238" text-anchor="middle" font-size="10" fill="#9fb2c6">open boot &lt; 7 m en ≤ 13 km/u: één wit rondomlicht volstaat</text>
+</svg>
+<div class="cap">Een zeilboot van 8 m redt het dus níét met alleen een wit toplicht — dat voorrecht stopt bij 7 m.</div></div>
+
+<div class="card"><h3>C2 · Zeilboot: driekleurenlicht is óf-óf <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="nacht">
+ <g transform="translate(110,120)"><line x1="0" y1="60" x2="0" y2="-70" stroke="#5a6a7c" stroke-width="3"/><g transform="translate(0,-78)"><circle cx="-8" cy="4" r="6" fill="#2e7d32"/><circle cx="8" cy="4" r="6" fill="#c62828"/><circle cy="-8" r="6" fill="#fff"/></g><text y="92" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">onder zeil: driekleurenlicht in de top</text><text y="106" text-anchor="middle" font-size="8.5" fill="#9fb2c6">óf boordlichten + heklicht — nooit beide</text></g>
+ <g transform="translate(330,120)"><line x1="0" y1="60" x2="0" y2="-52" stroke="#5a6a7c" stroke-width="3"/><g transform="translate(0,40)"><circle cx="-9" r="6" fill="#2e7d32"/><circle cx="9" r="6" fill="#c62828"/></g><circle cy="-58" r="7" fill="#fff"/><path d="M-16,-6 L16,-6 L0,18 Z" fill="#1a1a2e" stroke="#dfe8f2" stroke-width="1.6"/><text y="92" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">motor bij: motorverlichting + zwarte kegel</text><text y="106" text-anchor="middle" font-size="8.5" fill="#9fb2c6">driekleurenlicht úít · kegel met punt omlaag</text></g>
+ <text x="215" y="30" text-anchor="middle" font-size="11" font-weight="bold" fill="#dfe8f2">zeil + motor = motorschip</text>
+ <text x="215" y="238" text-anchor="middle" font-size="10" fill="#9fb2c6">alléén een driekleurenlicht installeren is onhandig: zeilend een haven binnenlopen mag niet</text>
+</svg>
+<div class="cap">Op de Westerschelde is het driekleurenlicht toegestaan voor kleine zeilschepen (&lt; 20 m) onder zeil.</div></div>
+
+<div class="card"><h3>C3 · Groot schip: twee omkeringen <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="nacht">
+ <g transform="translate(110,150)"><use href="#gschip" transform="scale(.85)"/><line x1="-50" y1="-13" x2="-50" y2="-58" stroke="#5a6a7c" stroke-width="3"/><path d="M-58,-62 A8,8 0 1 1 -42,-62 Z" fill="#fff"/><line x1="26" y1="-13" x2="26" y2="-84" stroke="#5a6a7c" stroke-width="3"/><path d="M18,-88 A8,8 0 1 1 34,-88 Z" fill="#fff"/><text y="44" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">varend &gt; 110 m: 2e toplicht áchter en hóger</text></g>
+ <g transform="translate(330,150)"><use href="#gschip" transform="scale(.85)"/><line x1="-50" y1="-13" x2="-50" y2="-84" stroke="#5a6a7c" stroke-width="3"/><circle cx="-50" cy="-90" r="6" fill="#fff"/><line x1="30" y1="-13" x2="30" y2="-54" stroke="#5a6a7c" stroke-width="3"/><circle cx="30" cy="-60" r="6" fill="#fff"/><text y="44" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">ten anker: vóórste licht hoger</text></g>
+ <text x="215" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="#dfe8f2">toplichten: achterste hoger — ankerlichten: voorste hoger</text>
+ <text x="215" y="238" text-anchor="middle" font-size="10" fill="#9fb2c6">groot zeilschip (≥ 20 m): rood bóven groen in de mast verplicht; klein mág het voeren</text>
+</svg>
+<div class="cap">Klein schip ten anker: één wit rondomlicht; overdag een zwarte bol op het voorschip.</div></div>
+
+<div class="card"><h3>C4 · Baggerwerktuig: welke kant? <span class="tag vraag">vraag</span></h3>
+<svg viewBox="0 0 430 240">
+ <g transform="translate(215,120)"><rect x="-70" y="-18" width="140" height="36" rx="6" fill="#8a919b" stroke="#4a5560" stroke-width="2"/><line x1="0" y1="-18" x2="0" y2="-64" stroke="#4a5560" stroke-width="3"/>
+ <g fill="#1a1a2e"><circle cx="-92" cy="-30" r="8"/><circle cx="-92" cy="-52" r="8"/></g><line x1="-92" y1="-18" x2="-92" y2="-58" stroke="#4a5560" stroke-width="2"/>
+ <g fill="#1a1a2e"><rect x="84" y="-38" width="16" height="16" transform="rotate(45 92 -30)"/><rect x="84" y="-60" width="16" height="16" transform="rotate(45 92 -52)"/></g><line x1="92" y1="-18" x2="92" y2="-58" stroke="#4a5560" stroke-width="2"/>
+ </g>
+ <text x="215" y="212" text-anchor="middle" font-size="12" font-weight="bold" fill="#a12020">Aan welke zijde passeer je dit werktuig?</text>
+</svg>
+<div class="cap">Links twee bollen, rechts twee ruiten. Antwoordopties onder het plaatje.</div></div>
+
+<div class="card"><h3>C4 · Baggerwerktuig: welke kant? <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 240">
+ <g transform="translate(215,120)"><rect x="-70" y="-18" width="140" height="36" rx="6" fill="#8a919b" stroke="#4a5560" stroke-width="2"/><line x1="0" y1="-18" x2="0" y2="-64" stroke="#4a5560" stroke-width="3"/>
+ <g fill="#1a1a2e"><circle cx="-92" cy="-30" r="8"/><circle cx="-92" cy="-52" r="8"/></g><line x1="-92" y1="-18" x2="-92" y2="-58" stroke="#4a5560" stroke-width="2"/>
+ <g fill="#1a1a2e"><rect x="84" y="-38" width="16" height="16" transform="rotate(45 92 -30)"/><rect x="84" y="-60" width="16" height="16" transform="rotate(45 92 -52)"/></g><line x1="92" y1="-18" x2="92" y2="-58" stroke="#4a5560" stroke-width="2"/>
+ </g>
+ <path d="M360,200 C330,182 330,150 330,120 C330,90 336,66 360,48" fill="none" stroke="#1e6b30" stroke-width="3.4" stroke-dasharray="0" marker-end="url(#ah)"/>
+ <text x="340" y="222" font-size="10.5" font-weight="bold" fill="#1e6b30">ruiten-zijde = vrij</text>
+ <line x1="82" y1="60" x2="118" y2="180" stroke="#c22222" stroke-width="3"/><line x1="82" y1="180" x2="118" y2="60" stroke="#c22222" stroke-width="3"/>
+ <text x="100" y="206" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#a12020">bollen-zijde = niet vrij</text>
+ <text x="215" y="30" text-anchor="middle" font-size="10.5" font-weight="bold">nacht: ruiten = dubbel groen · bollen = dubbel rood · romp: rood-wit-rood</text>
+</svg>
+<div class="cap">Bol-ruit-bol (rood-wit-rood) = beperkt manoeuvreerbaar; de ruiten/het groen wijzen de vrije doorgang — ook bij de mengvorm met één rode bol.</div></div>
+
+<div class="card"><h3>C5 · Vissersschip en bovenmaats zeeschip <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="nacht">
+ <g transform="translate(110,130)"><line x1="0" y1="40" x2="0" y2="-70" stroke="#5a6a7c" stroke-width="3"/><circle cy="-76" r="6" fill="#2e7d32"/><circle cy="-56" r="6" fill="#fff"/><g fill="#1a1a2e" stroke="#dfe8f2" stroke-width="1.4"><path d="M-12,10 L12,10 L0,28 Z"/><path d="M-12,46 L12,46 L0,28 Z" transform="rotate(180 0 37) translate(0,-18)"/></g><text y="66" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">vissersschip</text><text y="80" text-anchor="middle" font-size="8.5" fill="#9fb2c6">groen bóven wit · dag: diabolo · toplicht facultatief</text></g>
+ <g transform="translate(330,130)"><line x1="0" y1="40" x2="0" y2="-84" stroke="#5a6a7c" stroke-width="3"/><circle cy="-88" r="6" fill="#c62828"/><circle cy="-70" r="6" fill="#c62828"/><circle cy="-52" r="6" fill="#c62828"/><rect x="-9" y="-6" width="18" height="30" fill="#1a1a2e" stroke="#dfe8f2" stroke-width="1.4"/><text y="66" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">bovenmaats zeeschip</text><text y="80" text-anchor="middle" font-size="8.5" fill="#9fb2c6">3× rood rondom · dag: zwarte cilinder</text></g>
+ <text x="215" y="26" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#dfe8f2">bovenmaats = door de Rijkshavenmeester aangemerkt (lengte/diepgang vs. vaarwater)</text>
+ <text x="215" y="238" text-anchor="middle" font-size="10" fill="#9fb2c6">onmanoeuvreerbaar: 2× rood / 2 ballen · aan de grond: ankerlichten + 2× rood / 3 ballen</text>
+</svg>
+<div class="cap">De diabolo (punten tegen elkaar) is het dagmerk van de visser; de cilinder hoort bij het diepstekende zeeschip.</div></div>
+
+<div class="card"><h3>C6 · Voorzichtig voorbijvaren <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 220" class="nacht">
+ <g transform="translate(130,110)"><line x1="0" y1="50" x2="0" y2="-56" stroke="#5a6a7c" stroke-width="3"/><circle cy="-60" r="7" fill="#c62828"/><circle cy="-36" r="7" fill="#fff"/><text y="80" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">nacht: rood bóven wit</text></g>
+ <g transform="translate(320,104)"><rect x="-40" y="-28" width="80" height="28" fill="#c62828"/><rect x="-40" y="0" width="80" height="28" fill="#fff"/><rect x="-40" y="-28" width="80" height="56" fill="none" stroke="#dfe8f2" stroke-width="1.6"/><text y="56" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">dag: vlag of bord rood/wit</text></g>
+ <text x="215" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="#dfe8f2">géén hinderlijke waterbeweging veroorzaken</text>
+ <text x="215" y="204" text-anchor="middle" font-size="10" fill="#9fb2c6">op ten anker liggende, gemeerde, aan de grond zittende of gezonken schepen met golfslag-/zuigingsgevaar</text>
+</svg>
+<div class="cap">Langzaam en ruim passeren — het teken beschermt het stilliggende schip, niet jou.</div></div>
+
+<div class="card"><h3>C7 · Sleepconventie op de Westerschelde <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="nacht">
+ <g transform="translate(120,120)"><use href="#kschip" transform="scale(.9)"/><line x1="-8" y1="-11" x2="-8" y2="-72" stroke="#5a6a7c" stroke-width="3"/><circle cx="-8" cy="-76" r="6" fill="#fff"/><circle cx="-8" cy="-58" r="6" fill="#fff"/><circle cx="34" cy="0" r="5" fill="#f2c500"/><text y="42" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">sleepboot: 2 toplichten + géél heklicht</text><text y="56" text-anchor="middle" font-size="8.5" fill="#9fb2c6">2 of meer sleepboten aan één sleep: elk 3 toplichten</text></g>
+ <line x1="158" y1="114" x2="252" y2="114" stroke="#9fb2c6" stroke-width="2" stroke-dasharray="6,5"/>
+ <g transform="translate(310,120)"><use href="#kschip" transform="scale(.9)"/><line x1="-4" y1="-11" x2="-4" y2="-46" stroke="#5a6a7c" stroke-width="3"/><circle cx="-4" cy="-50" r="6" fill="#fff"/><circle cx="34" cy="0" r="5" fill="#fff"/><text y="42" text-anchor="middle" font-size="9.5" fill="#dfe8f2" font-weight="bold">gesleept: wit rondomlicht</text><text y="56" text-anchor="middle" font-size="8.5" fill="#9fb2c6">laatste van de sleep: óók wit heklicht</text></g>
+ <text x="215" y="26" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#dfe8f2">binnenschip dat sleept: heklicht → geel sleeplicht</text>
+ <text x="215" y="238" text-anchor="middle" font-size="10" fill="#9fb2c6">werk in/nabij het vaarwater: extra geel flikkerlicht · politieopdracht: blauw flikkerlicht (zone tussen twee = verboden)</text>
+</svg>
+<div class="cap">Twee toplichten boven elkaar aan de kop = er hangt iets achter; drie = meerdere sleepboten.</div></div>
+</div>
+
+<h2>D. Marifoon, reflector en nood</h2>
+<div class="grid">
+<div class="card"><h3>D1 · Marifoon-drietrap en radarreflector <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 230" class="diagram">
+ <g font-size="10.5">
+ <rect x="24" y="34" width="382" height="36" rx="6" fill="#fde8e8" stroke="#a12020"/><text x="34" y="57" font-weight="bold" fill="#a12020">groot (≥ 20 m): marifoonplichtig</text>
+ <rect x="24" y="78" width="382" height="36" rx="6" fill="#fde8c8" stroke="#e07b00"/><text x="34" y="101" font-weight="bold" fill="#7a4400">klein mét binnenvaart-radar: óók marifoonplichtig</text>
+ <rect x="24" y="122" width="382" height="36" rx="6" fill="#e6f2e6" stroke="#1e6b30"/><text x="34" y="145" font-weight="bold" fill="#1e6b30">klein zonder radar: niet verplicht — maar héb je er een: gebruiken en uitluisteren</text>
+ </g>
+ <text x="215" y="188" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#a12020">wachthouden: altijd uitluisteren en reageren — ook gemeerd/ten anker, ook bij mooi weer</text>
+ <text x="215" y="214" text-anchor="middle" font-size="10.5" font-weight="bold">radarreflector: elk klein schip, áltijd (enige uitzondering: zeilplank)</text>
+</svg>
+<div class="cap">Reglement + bijgewerkte zeekaart aan boord (gedrukt en/of digitaal) — behalve op een kleine open boot.</div></div>
+
+<div class="card"><h3>D2 · Noodseinen <span class="tag uitleg">uitleg</span></h3>
+<svg viewBox="0 0 430 250" class="diagram">
+ <g transform="translate(90,90)"><circle cx="0" cy="-16" r="9" fill="#e8b06a" stroke="#7a4a10"/><line x1="0" y1="-7" x2="0" y2="22" stroke="#7a4a10" stroke-width="3"/><g stroke="#7a4a10" stroke-width="3"><line x1="0" y1="0" x2="-24" y2="-26"/><line x1="0" y1="0" x2="24" y2="-26"/></g><g stroke="#7a4a10" stroke-width="3"><line x1="0" y1="22" x2="-12" y2="52"/><line x1="0" y1="22" x2="12" y2="52"/></g><path d="M-30,-34 Q-36,-16 -30,0 M30,-34 Q36,-16 30,0" fill="none" stroke="#a12020" stroke-width="2"/></g>
+ <text x="90" y="168" text-anchor="middle" font-size="9.5" font-weight="bold">beide gestrekte armen langzaam op en neer</text>
+ <g transform="translate(270,66)" font-family="monospace" font-size="15" font-weight="bold"><text>· · ·  — — —  · · ·</text></g>
+ <text x="316" y="92" text-anchor="middle" font-size="9.5" font-weight="bold">SOS (morse) · marifoon: “mayday”</text>
+ <g transform="translate(250,130)"><rect x="-10" y="0" width="20" height="34" fill="#8a919b"/><path d="M-8,-2 Q0,-30 12,-8 Q26,-22 22,2 Q34,4 22,14 L-8,10 Z" fill="#e07b00" opacity=".85"/></g>
+ <text x="256" y="188" text-anchor="middle" font-size="9.5" font-weight="bold">oranje rooksignaal</text>
+ <text x="370" y="140" text-anchor="middle" font-size="9.5" font-weight="bold">rondzwaaien met</text>
+ <text x="370" y="154" text-anchor="middle" font-size="9.5" font-weight="bold">licht of vlag</text>
+ <text x="215" y="228" text-anchor="middle" font-size="10">verder: sirene · reeksen klokslagen of lange stoten</text>
+</svg>
+<div class="cap">Alles wat opvallend, ritmisch en ongebruikelijk is — de examenvraag toetst herkenning van de reeks.</div></div>
+</div>
+
+<div class="intro" style="margin-top:30px"><b>Hiermee zijn de drie KVB2-batches compleet</b> (batch 1: navigatie · batch 2: betonning/kaart/getijden/meteo · batch 3: SRW). Volgende stap na jouw review: de KVB2-oefenbank (27 slots, 50 punten, cesuur 35, 90 min) met het invul-vraagtype met marge-validatie.</div>
+</body>
+</html>
