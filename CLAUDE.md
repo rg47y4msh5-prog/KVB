@@ -34,6 +34,14 @@ Repo: rg47y4msh5-prog/KVB, branch `main`, geen build-stap — wat in de repo sta
 - **VIS-register**: scènes ontkoppelen van vragen via `const VIS={id:"<svg…>"}` + `vid`-verwijzing per vraag, engine-lookup `VIS[q.vid]||q.v`. Doel: één scène, meerdere vragen (scène-eerst schrijven); leak-scan dan per combinatie scène × vraag.
 - **Labelconventie assets**: `<g class="art">` / `<g class="lbl">` scheiden zodat vraagvarianten mechanisch te strippen zijn; verplicht voor nieuw Design-werk.
 
+
+## Bronmateriaal (map `bron/` — LOKAAL, nooit committen)
+
+- `bron/` staat in `.gitignore` en mag nooit naar de publieke repo: het cursusboek is auteursrechtelijk beschermd.
+- `bron/bron_cursusboek_tekst.md` — volledige tekstlaag van het cursusboek (16e druk 2025), per gedrukte pagina gemarkeerd met `=== pagina N ===`. Dit is de snelste ingang: grep op onderwerp, lees de relevante pagina's. De lesopbouw (KVB1 les 1–4 ≈ p4–163, KVB2 les 5–8 ≈ p164–265) is de blauwdruk voor de leeromgeving-structuur.
+- `bron/p{nr}.jpg` (of `*_Page_{nr}.jpg`) — paginascans. Alleen per pagina openen wanneer een figuur nodig is als stijl-/detailreferentie; nooit als geheel inlezen (context) en nooit reproduceren.
+- Werkwijze: structuur en formuleringen altijd eerst uit de tekstlaag halen; een JPG er alleen bij pakken als de tekst naar een figuur verwijst. Alles wat in de site belandt is eigen parafrase en eigen tekening.
+
 ## Leeromgeving (het doel)
 
 Opbouw volgt het cursusboek (KVB1 les 1–4, KVB2 les 5–8): per les theorie → visual → oefenvragen, met voortgang per les en doorverwijzing naar de oefenbanken voor de examensimulatie. Zelfde standalone-filosofie; de vragenbanken zijn de databron en blijven leidend.
