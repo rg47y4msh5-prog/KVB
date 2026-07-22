@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+body{font-family:Helvetica,Arial,sans-serif;background:#fff;margin:10px}
+.t{display:inline-block;width:118px;vertical-align:top;text-align:center;margin:4px;border:1px solid #ddd;border-radius:6px;padding:4px}
+.t img{width:100%;height:auto}
+.t .c{font-size:11px;font-weight:bold}
+.t .n{font-size:9px;color:#555}
+</style></head><body><div id="grid">laden…</div><script>
+fetch('/kvb1-assets.html').then(r=>r.text()).then(src=>{
+ const i=src.indexOf('const M = [');const j=src.indexOf('];',i);
+ const M=new Function(src.slice(i,j+2)+'; return M;')();
+ const sel=M.map((a,k)=>({...a,k})).filter(a=>a.batch==='borden'||a.tag==='legenda'||/^[ABCDE]\.?[0-9]/.test(a.code));
+ document.getElementById('grid').innerHTML=sel.map(a=>
+  `<div class="t"><img src="data:image/svg+xml;base64,${a.b64}"><div class="c">${a.code} <span style="color:#999">#${a.k}</span></div><div class="n">${a.title}</div></div>`).join('');
+ document.title=sel.length+' borden';
+});
+</script></body></html>
